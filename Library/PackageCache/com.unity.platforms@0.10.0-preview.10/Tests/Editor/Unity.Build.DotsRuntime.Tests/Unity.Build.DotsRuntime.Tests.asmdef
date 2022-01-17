@@ -1,0 +1,13 @@
+{
+    "name": "Unity.Build.DotsRuntime.Tests",
+    "references": [
+        "Unity.Build.DotsRuntime"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

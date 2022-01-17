@@ -1,0 +1,11 @@
+{
+    "FileContentKeywordValidation":
+    {
+        "IgnoreFilenames":
+        [
+            "Editor/Unity.Build/Platform.cs",
+            "Editor/Unity.Build/KnownPlatforms.cs",
+            "Editor/Unity.Build/Extensions/BuildTargetExtensions.cs"
+        ]
+    }
+}

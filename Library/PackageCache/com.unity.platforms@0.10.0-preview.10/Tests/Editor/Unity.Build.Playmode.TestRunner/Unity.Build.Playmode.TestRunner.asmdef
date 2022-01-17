@@ -1,0 +1,29 @@
+{
+    "name": "Unity.Build.Playmode.TestRunner",
+    "references": [
+        "GUID:0acc523941302664db1f4e527237feb3",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:363a3288c06c1c14cbbeedbda31215f9",
+        "GUID:3348cdac4e8a3c94baf775a68592a2a0",
+        "GUID:5e6f91e19839e174182a3ede8bfe7867"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.test-framework",
+            "expression": "1.2.0",
+            "define": "ENABLE_PLAYMODE_EXTENSION"
+        }
+    ],
+    "noEngineReferences": false
+}

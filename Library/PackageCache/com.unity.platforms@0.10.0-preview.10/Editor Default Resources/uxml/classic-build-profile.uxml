@@ -1,0 +1,8 @@
+<UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:uip="Unity.Properties.UI">
+  <ui:VisualElement name="platform"/>
+  <ui:VisualElement name="helpbox" class="classic-build-profile__helpbox">
+    <ui:Image name="icon" class="classic-build-profile__icon"/>
+    <ui:Label name="message" class="classic-build-profile__message"/>
+  </ui:VisualElement>
+  <ui:VisualElement name="configuration"/>
+</UXML>
