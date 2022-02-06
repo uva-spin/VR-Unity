@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4593,14 +4593,11 @@ MonoBehaviour:
   trailWidthSlider: {fileID: 2055267812}
   sliderComp: {fileID: 0}
   trailWidths: {fileID: 0}
-  openMenuButton: {fileID: 322037597}
-  closeMenuButton: {fileID: 1137225807}
+  controllerMenuButton: {fileID: 4373060057972069976, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   quark1: {fileID: 352734245}
   quark2: {fileID: 445006287}
   quark3: {fileID: 1036100726}
   menuActive: 0
-  openMenuButtonActive: 1
-  closeMenuButtonActive: 0
 --- !u!1 &1325398963
 GameObject:
   m_ObjectHideFlags: 0
@@ -5942,7 +5939,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7352,7 +7349,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7918,7 +7915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &3096119768704471495
 GameObject:
   m_ObjectHideFlags: 0
@@ -7954,14 +7951,11 @@ MonoBehaviour:
   trailWidthSlider: {fileID: 0}
   sliderComp: {fileID: 0}
   trailWidths: {fileID: 0}
-  openMenuButton: {fileID: 0}
-  closeMenuButton: {fileID: 0}
+  controllerMenuButton: {fileID: 0}
   quark1: {fileID: 0}
   quark2: {fileID: 0}
   quark3: {fileID: 0}
   menuActive: 0
-  openMenuButtonActive: 1
-  closeMenuButtonActive: 0
 --- !u!1 &5044765496965329252
 GameObject:
   m_ObjectHideFlags: 0
