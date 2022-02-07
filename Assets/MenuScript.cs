@@ -11,8 +11,6 @@ public class MenuScript : MonoBehaviour
     public GameObject trailWidthSlider;
     public Slider sliderComp;
     public Slider trailWidths;
-    //public GameObject openMenuButton;
-    //public GameObject closeMenuButton;
     public InputActionReference controllerMenuButton; // menu toggle button on vr controller
 
     public GameObject quark1;
@@ -23,9 +21,6 @@ public class MenuScript : MonoBehaviour
     Quark quark2comp;
     Quark quark3comp;
 
-    public bool menuActive = false;
-    //public bool openMenuButtonActive = true;
-    //public bool closeMenuButtonActive = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -46,38 +41,6 @@ public class MenuScript : MonoBehaviour
         quark3comp.trailWidth = trailWidths.value;
 
         if (controllerMenuButton.action.triggered)
-            menuActive = !menuActive; 
-        
-        if(menuActive)
-            menu.SetActive(true);
-        else
-            menu.SetActive(false);
-
-        
-        /*
-        if(openMenuButtonActive){
-            openMenuButton.SetActive(true);
-            closeMenuButton.SetActive(false);
-        }
-        else{
-            openMenuButton.SetActive(false);
-            closeMenuButton.SetActive(true);
-        }
-        */
-    }
-
-    public void MenuShow(){
-        menuActive = true;
-        /*
-        closeMenuButtonActive=true;
-        openMenuButtonActive = false;
-        */
-    }
-    public void MenuHide(){
-        menuActive = false;
-        /*
-        closeMenuButtonActive=false;
-        openMenuButtonActive = true;
-        */
+            menu.SetActive(!menu.activeSelf);
     }
 }
