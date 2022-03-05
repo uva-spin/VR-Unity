@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -12,6 +13,8 @@ public class MenuScript : MonoBehaviour
     public Slider sliderComp;
     public Slider trailWidths;
     public InputActionReference controllerMenuButton; // menu toggle button on vr controller
+    public GameObject hmd;
+    public float menuDistance;
 
     public GameObject quark1;
     public GameObject quark2;
@@ -41,6 +44,15 @@ public class MenuScript : MonoBehaviour
         quark3comp.trailWidth = trailWidths.value;
 
         if (controllerMenuButton.action.triggered)
+        {
             menu.SetActive(!menu.activeSelf);
+            if (menu.activeSelf)
+            {
+                // TODO: make menu appear close to headset
+                Quaternion menuAngle = new Quaternion(hmd.transform.rotation.x, hmd.transform.rotation.y, 0, hmd.transform.rotation.w);
+                menu.transform.SetPositionAndRotation(
+                    hmd.transform.position + hmd.transform.forward * menuDistance, menuAngle);
+            } 
+        }
     }
 }
