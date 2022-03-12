@@ -49,7 +49,7 @@ public class MenuScript : MonoBehaviour
             if (menu.activeSelf)
             {
                 // TODO: make menu appear close to headset
-                Quaternion menuAngle = new Quaternion(hmd.transform.rotation.x, hmd.transform.rotation.y, 0, hmd.transform.rotation.w);
+                Quaternion menuAngle = new Quaternion(hmd.transform.rotation.x, hmd.transform.rotation.y, hmd.transform.rotation.z, hmd.transform.rotation.w);
                 menu.transform.SetPositionAndRotation(
                     hmd.transform.position + hmd.transform.forward * menuDistance, menuAngle);
             } 
