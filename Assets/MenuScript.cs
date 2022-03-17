@@ -32,7 +32,7 @@ public class MenuScript : MonoBehaviour
         quark1comp = quark1.GetComponent<Quark>();
         quark2comp = quark2.GetComponent<Quark>();
         quark3comp = quark3.GetComponent<Quark>();
-        
+        menu.SetActive(false);
     }
 
     // Update is called once per frame
