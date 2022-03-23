@@ -1,3 +1,5 @@
+# if (false)
+
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -5,6 +7,7 @@ using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
 using Random = Unity.Mathematics.Random;
+using UnityEngine;
 
 // Systems can schedule work to run on worker threads.
 // However, creating and removing Entities can only be done on the main thread to prevent race conditions.
@@ -13,6 +16,24 @@ using Random = Unity.Mathematics.Random;
 // ReSharper disable once InconsistentNaming
 [UpdateInGroup(typeof(SimulationSystemGroup))]
 public partial class SpawnerSystem : SystemBase {
+
+    static float3 randomPointInUnitSphere(Random random) {
+        // I have to use this custom function instead of the Unity built-in one because of an import not being allowed. 
+        var u = random.NextFloat();
+        var v = random.NextFloat();
+        var theta = u * 2.0 * math.PI;
+        var phi = math.acos(2.0 * v - 1.0);
+        var r = math.pow(random.NextFloat(), 0.33f);
+        var sinTheta = math.sin(theta);
+        var cosTheta = math.cos(theta);
+        var sinPhi = math.sin(phi);
+        var cosPhi = math.cos(phi);
+        var x = r * sinPhi * cosTheta;
+        var y = r * sinPhi * sinTheta;
+        var z = r * cosPhi;
+        return new float3((float)x, (float)y, (float)z);
+    }
+
     // BeginInitializationEntityCommandBufferSystem is used to create a command buffer which will then be played back
     // when that barrier system executes.
     //
@@ -30,6 +51,7 @@ public partial class SpawnerSystem : SystemBase {
     }
 
     protected override void OnUpdate() {
+        // Random random = new Random(1);
         // Instead of performing structural changes directly, a Job can add a command to an EntityCommandBuffer to
         // perform such changes on the main thread after the Job has finished. Command buffers allow you to perform
         // any, potentially costly, calculations on a worker thread, while queuing up the actual insertions and
@@ -48,11 +70,9 @@ public partial class SpawnerSystem : SystemBase {
                 for (var i = 0; i < spawner.Count; i++) {
                     var instance = commandBuffer.Instantiate(entityInQueryIndex, spawner.Prefab);
 
-                    // Place the instantiated in a grid with some noise
-                    // var position = math.transform(location.Value, new float3(x * 1.3F, noise.cnoise(new float2(x, y) * 0.21F) * 2, y * 1.3F));
-                    var position = new float3(random.NextFloat()*spawner.CageRadius, random.NextFloat()*spawner.CageRadius, random.NextFloat()*spawner.CageRadius);
-                    // position *= 0.5f;
+                    var position = randomPointInUnitSphere(random) * spawner.CageRadius;
                     // var position = UnityEngine.Random.insideUnitSphere * spawner.cageRadius;
+                    Debug.Log(string.Format("creating particle, i={0}, position={1}", i, position));
 
                     commandBuffer.SetComponent(entityInQueryIndex, instance, new Translation { Value = position });
                     // commandBuffer.SetComponent(entityInQueryIndex, instance, new LifeTime { Value = random.NextFloat(10.0F, 100.0F) });
@@ -70,3 +90,5 @@ public partial class SpawnerSystem : SystemBase {
         m_EntityCommandBufferSystem.AddJobHandleForProducer(Dependency);
     }
 }
+
+#endif

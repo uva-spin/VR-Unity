@@ -1,3 +1,5 @@
+#if (false)
+
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -17,3 +19,4 @@ public class MovementAuthoring : MonoBehaviour, IConvertGameObjectToEntity {
         // dstManager.AddComponentData(entity, new ParticleColor { Hue = 0.0F });
     }
 }
+#endif

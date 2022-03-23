@@ -1,3 +1,5 @@
+#if (false)
+
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
@@ -26,3 +28,4 @@ public class SpawnerAuthoring : MonoBehaviour, IDeclareReferencedPrefabs, IConve
         dstManager.AddComponentData(entity, spawnerData);
     }
 }
+#endif

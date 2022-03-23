@@ -1,3 +1,5 @@
+#if (false)
+
 using Unity.Entities;
 
 public struct SpawnerComponent : IComponentData {
@@ -7,3 +9,4 @@ public struct SpawnerComponent : IComponentData {
 
     // Other fields for initial state (eg number of gluons vs seaquarks)
 }
+#endif
