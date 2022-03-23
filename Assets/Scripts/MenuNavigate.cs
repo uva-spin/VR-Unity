@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,18 +13,12 @@ public class MenuNavigate : MonoBehaviour
         for (int i = 0; i < menus.Length; i++)
             menus[i].SetActive(i == tab);
     }
-    
-    /*
-    // Start is called before the first frame update
+
     void Start()
     {
-        
+        const int OPTIONS = 0;
+        const int STATS = 1;
+        menus[OPTIONS].SetActive(true);
+        menus[STATS].SetActive(false);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    */
 }
