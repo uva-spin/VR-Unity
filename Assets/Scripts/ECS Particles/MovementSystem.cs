@@ -58,8 +58,7 @@ public partial class MovementSystem : SystemBase {
             .ForEach((int entityInQueryIndex, ref Translation position, in MovementComponent movementComponent) => {
                 float3 boidPosition = position.Value;
                 
-                float3 seperationSum = float3.zero;
-                float3 positionSum = float3.zero;
+                float3 attractRepelSum = float3.zero;
 
                 int boidsNearby = 0;
                 for (int otherBoidIndex = 0; otherBoidIndex < entityArray.Length; otherBoidIndex++) {
@@ -67,27 +66,32 @@ public partial class MovementSystem : SystemBase {
                     if (otherBoidIndex != entityInQueryIndex) {
                         
                         float3 otherPosition = localToWorldArray[otherBoidIndex].Position;
+                        float3 diff = otherPosition - boidPosition;
                         // float3 otherPosition = localToWorldArray[otherBoidIndex].Value;
-                        float distToOtherBoid = math.length(boidPosition - otherPosition); // TODO avoid square root here?
-                        // Debug.Log(string.Format("for i={0}, otherpos={1}, dist={2}", entityInQueryIndex, otherPosition, distToOtherBoid));
+                        float distToOtherBoid = math.length(diff); // TODO avoid square root here?
 
                         if (distToOtherBoid < movementComponent.perceptionRadius) {
                             boidsNearby++;
-                            seperationSum += -(otherPosition - boidPosition) * (1f / math.max(distToOtherBoid, 0.01f));
-                            positionSum += otherPosition;
+
+                            if(distToOtherBoid < movementComponent.repelRadius) {
+                                // attractRepelSum += -1 * movementComponent.repelWeight * (movementComponent.repelRadius - distToOtherBoid)/movementComponent.repelRadius * math.normalize(diff);
+                                attractRepelSum += -1 * movementComponent.repelWeight * math.normalize(diff) / math.pow(math.max(distToOtherBoid, 0.1f), 2);
+                            } else {
+                                attractRepelSum += movementComponent.attractWeight * math.normalize(diff);
+                            }
                         }
                     }
                 }
-                // Debug.Log(string.Format("nearby={0}, positionsum={1}", boidsNearby, positionSum));
+                // Debug.Log(string.Format("i={0}, nearby={1}", entityInQueryIndex, boidsNearby));
 
                 float3 force = float3.zero;
 
                 if (boidsNearby > 0) {
-                    float3 separationForce = (seperationSum / boidsNearby)                * movementComponent.separationWeight;
-                    float3 cohesionForce   = ((positionSum / boidsNearby) - boidPosition) * movementComponent.cohesionWeight;
-                    // float3 cohesionForce = float3.zero;
-                    force += (separationForce + cohesionForce);
-                    // Debug.Log(string.Format("sf={0}, cf={1}", separationForce, cohesionForce));
+                    // float3 separationForce = (seperationSum / boidsNearby)                * movementComponent.separationWeight;
+                    // float3 cohesionForce   = ((positionSum / boidsNearby) - boidPosition) * movementComponent.cohesionWeight;
+                    // float3 separationForce = (seperationSum / boidsNearby)                * movementComponent.separationWeight;
+                    float3 attractRepelForce = (attractRepelSum / boidsNearby);
+                    force += attractRepelForce;
                 }
 
                 float3 valenceQuarkForce = float3.zero;
@@ -99,9 +103,7 @@ public partial class MovementSystem : SystemBase {
                 valenceQuarkForce += (q3Dir / math.max(0.01f, math.lengthsq(q3Dir)));
                 force += valenceQuarkForce * movementComponent.valenceQuarkWeight;
 
-                float boidLengthSq = math.lengthsq(boidPosition);
-                // if(math.length(boidPosition) > movementComponent.cageRadius) {
-                if(boidLengthSq > math.pow(movementComponent.cageRadius, 2)) {
+                if(math.length(boidPosition) > movementComponent.cageRadius) {
                     float3 avoidCageForce = -math.normalize(boidPosition) * movementComponent.avoidCageWeight; // TODO this should be smoother, maybe exponential?
                     force += avoidCageForce;
                     // Debug.Log(string.Format("boid outside cage, length={0}, i={1}", math.length(boidPosition), entityInQueryIndex));
@@ -150,6 +152,7 @@ public partial class MovementSystem : SystemBase {
         Entities
             .WithName("MovementSystem_translate")
             .WithAll<MovementComponent>()
+            .WithReadOnly(newParticlePositions)
             // .WithBurst()
             .ForEach((int entityInQueryIndex, ref Rotation rotation, ref Translation position, in MovementComponent rotSpeedSpawnAndRemove) => {
                 // rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(math.up(), rotSpeedSpawnAndRemove.RadiansPerSecond * deltaTime));

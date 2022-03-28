@@ -20,8 +20,9 @@ public class Spawner : MonoBehaviour {
 
     public float boidSpeed;
     public float perceptionRadius;
-    public float separationWeight;
-    public float cohesionWeight;
+    public float attractWeight;
+    public float repelWeight;
+    public float repelRadius;
     public float cageRadius;
     public float avoidCageWeight;
     public float valenceQuarkWeight;
@@ -74,8 +75,9 @@ public class Spawner : MonoBehaviour {
         entityManager.AddComponentData(e, new MovementComponent {
             boidSpeed = boidSpeed,
             perceptionRadius = perceptionRadius,
-            separationWeight = separationWeight,
-            cohesionWeight = cohesionWeight,
+            attractWeight = attractWeight,
+            repelWeight = repelWeight,
+            repelRadius = repelRadius,
             cageRadius = cageRadius,
             avoidCageWeight = avoidCageWeight,
             valenceQuarkWeight = valenceQuarkWeight,
