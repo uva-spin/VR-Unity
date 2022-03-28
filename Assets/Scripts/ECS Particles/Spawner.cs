@@ -22,9 +22,9 @@ public class Spawner : MonoBehaviour {
     public float perceptionRadius;
     public float separationWeight;
     public float cohesionWeight;
-    public float alignmentWeight;
     public float cageRadius;
     public float avoidCageWeight;
+    public float valenceQuarkWeight;
 
     private void Start() {
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -76,9 +76,9 @@ public class Spawner : MonoBehaviour {
             perceptionRadius = perceptionRadius,
             separationWeight = separationWeight,
             cohesionWeight = cohesionWeight,
-            alignmentWeight = alignmentWeight,
             cageRadius = cageRadius,
             avoidCageWeight = avoidCageWeight,
+            valenceQuarkWeight = valenceQuarkWeight,
         });
     }
 

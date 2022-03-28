@@ -4216,7 +4216,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080163491}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4234,15 +4234,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7bbfc4a023ac04ea655bae61863390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boidsToSpawn: 500
+  boidsToSpawn: 1500
   prefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
-  boidSpeed: 1
-  perceptionRadius: 0.5
-  separationWeight: 3
-  cohesionWeight: 4
-  alignmentWeight: 4
+  boidSpeed: 2
+  perceptionRadius: 0.7
+  separationWeight: 1.5
+  cohesionWeight: 0.2
   cageRadius: 1.5
-  avoidCageWeight: 4
+  avoidCageWeight: 1
+  valenceQuarkWeight: 0.1
 --- !u!1 &1081727697
 GameObject:
   m_ObjectHideFlags: 0

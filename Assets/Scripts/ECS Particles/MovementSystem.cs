@@ -13,9 +13,25 @@ public partial class MovementSystem : SystemBase {
     //     public LocalToWorld localToWorld;
     // }
 
+    // static GameObject valenceQuarkDown;
+    // static GameObject valenceQuarkUpRed;
+    // static GameObject valenceQuarkUpBlue;
+
+    // protected override void OnCreate() {
+    //     base.OnCreate();
+    //     valenceQuarkDown = GameObject.Find("Quark3_Down");
+    //     valenceQuarkUpRed = GameObject.Find("Quark1_Up_Red");
+    //     valenceQuarkUpBlue = GameObject.Find("Quark2_Up_Blue");
+    //     Debug.Log(string.Format("found valence quarks, down position={0}", valenceQuarkDown.transform.position));
+    // }
+
     // OnUpdate runs on the main thread.
     protected override void OnUpdate() {
         var deltaTime = Time.DeltaTime;
+
+        float3 valenceQuarkDown = new float3(GameObject.Find("Quark3_Down").transform.position);
+        float3 valenceQuarkUpRed = new float3(GameObject.Find("Quark1_Up_Red").transform.position);
+        float3 valenceQuarkUpBlue = new float3(GameObject.Find("Quark2_Up_Blue").transform.position);
         
         EntityQuery particleQuery = GetEntityQuery(ComponentType.ReadOnly<MovementComponent>(), ComponentType.ReadOnly<LocalToWorld>());
 
@@ -38,13 +54,12 @@ public partial class MovementSystem : SystemBase {
             .WithName("MovementSystem_calculate")
             .WithAll<MovementComponent>()
             .WithReadOnly(localToWorldArray)
-            // .WithBurst()
-            .ForEach((int entityInQueryIndex, ref Rotation rotation, ref Translation position, in MovementComponent movementComponent) => {
+            .WithBurst()
+            .ForEach((int entityInQueryIndex, ref Translation position, in MovementComponent movementComponent) => {
                 float3 boidPosition = position.Value;
                 
                 float3 seperationSum = float3.zero;
                 float3 positionSum = float3.zero;
-                // float3 headingSum = float3.zero;
 
                 int boidsNearby = 0;
                 for (int otherBoidIndex = 0; otherBoidIndex < entityArray.Length; otherBoidIndex++) {
@@ -58,10 +73,8 @@ public partial class MovementSystem : SystemBase {
 
                         if (distToOtherBoid < movementComponent.perceptionRadius) {
                             boidsNearby++;
-                            seperationSum += -(otherPosition - boidPosition) * (1f / math.max(distToOtherBoid, .0001f));
+                            seperationSum += -(otherPosition - boidPosition) * (1f / math.max(distToOtherBoid, 0.01f));
                             positionSum += otherPosition;
-                            // headingSum += localToWorldArray[otherBoidIndex].Forward;
-                            // headingSum += math.forward(localToWorldArray[otherBoidIndex].Value);
                         }
                     }
                 }
@@ -71,19 +84,27 @@ public partial class MovementSystem : SystemBase {
 
                 if (boidsNearby > 0) {
                     float3 separationForce = (seperationSum / boidsNearby)                * movementComponent.separationWeight;
-                    // float3 cohesionForce   = ((positionSum / boidsNearby) - boidPosition) * movementComponent.cohesionWeight;
-                    // float3 alignForce      = (headingSum / boidsNearby)                   * movementComponent.alignmentWeight;
-                    float3 cohesionForce = float3.zero;
-                    float3 alignForce = float3.zero;
-                    force += (separationForce + cohesionForce + alignForce);
-                    // Debug.Log(string.Format("sf={0}, cf={1}, af={2}", separationForce, cohesionForce, alignForce));
+                    float3 cohesionForce   = ((positionSum / boidsNearby) - boidPosition) * movementComponent.cohesionWeight;
+                    // float3 cohesionForce = float3.zero;
+                    force += (separationForce + cohesionForce);
+                    // Debug.Log(string.Format("sf={0}, cf={1}", separationForce, cohesionForce));
                 }
 
-                if(math.length(boidPosition) > movementComponent.cageRadius) {
-                    float3 avoidCageForce = -math.normalize(boidPosition) * movementComponent.avoidCageWeight;
+                float3 valenceQuarkForce = float3.zero;
+                float3 q1Dir = valenceQuarkDown - boidPosition;
+                float3 q2Dir = valenceQuarkUpRed - boidPosition;
+                float3 q3Dir = valenceQuarkUpBlue - boidPosition;
+                valenceQuarkForce += (q1Dir / math.max(0.01f, math.lengthsq(q1Dir)));
+                valenceQuarkForce += (q2Dir / math.max(0.01f, math.lengthsq(q2Dir)));
+                valenceQuarkForce += (q3Dir / math.max(0.01f, math.lengthsq(q3Dir)));
+                force += valenceQuarkForce * movementComponent.valenceQuarkWeight;
+
+                float boidLengthSq = math.lengthsq(boidPosition);
+                // if(math.length(boidPosition) > movementComponent.cageRadius) {
+                if(boidLengthSq > math.pow(movementComponent.cageRadius, 2)) {
+                    float3 avoidCageForce = -math.normalize(boidPosition) * movementComponent.avoidCageWeight; // TODO this should be smoother, maybe exponential?
                     force += avoidCageForce;
                     // Debug.Log(string.Format("boid outside cage, length={0}, i={1}", math.length(boidPosition), entityInQueryIndex));
-                    // Debug.Log(string.Format("boid outside cage, force={0}", avoidCageForce));
                 }
 
                 // float3 velocity = localToWorld.Forward * boidSpeed;
@@ -93,7 +114,7 @@ public partial class MovementSystem : SystemBase {
                 // float3 velocity = math.forward(rotation.Value) * force * boidSpeed;
                 float3 velocity = force * movementComponent.boidSpeed;
 
-                newParticlePositions[entityInQueryIndex] = position.Value + velocity * deltaTime;
+                newParticlePositions[entityInQueryIndex] = boidPosition + velocity * deltaTime;
                 // newParticlePositions[entityInQueryIndex] = position.Value + (new float3(0, 0.01f, 0));
                     // localToWorld.Position + (velocity + new float3(0, 0.05f, 0)) * deltaTime,
                     // position.Value + (new float3(0, 1f, 0))
@@ -127,7 +148,7 @@ public partial class MovementSystem : SystemBase {
 
         // /*
         Entities
-            .WithName("MovementSystem_debug_translate")
+            .WithName("MovementSystem_translate")
             .WithAll<MovementComponent>()
             // .WithBurst()
             .ForEach((int entityInQueryIndex, ref Rotation rotation, ref Translation position, in MovementComponent rotSpeedSpawnAndRemove) => {
