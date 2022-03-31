@@ -7,6 +7,10 @@ using Unity.Transforms;
 using UnityEngine;
 
 
+public struct CellData {
+    public float3 position;
+}
+
 public partial class MovementSystem : SystemBase {
     // private struct EntityWithLocalToWorld {
     //     public Entity entity;
@@ -16,6 +20,15 @@ public partial class MovementSystem : SystemBase {
     // static GameObject valenceQuarkDown;
     // static GameObject valenceQuarkUpRed;
     // static GameObject valenceQuarkUpBlue;
+
+    private static int GetPositionHashMapKey(float3 p) {
+        float cellSize = 1f;
+        // int yMultiplier = (int) cellSize*3;
+        // int zMultiplier = (int) yMultiplier*3;
+        int yMultiplier = 3;
+        int zMultiplier = 9;
+        return (int) (math.floor(p.x/cellSize) + yMultiplier*math.floor(p.y/cellSize) + zMultiplier*math.floor(p.z/cellSize));;
+    }
 
     // protected override void OnCreate() {
     //     base.OnCreate();
@@ -36,60 +49,65 @@ public partial class MovementSystem : SystemBase {
         EntityQuery particleQuery = GetEntityQuery(ComponentType.ReadOnly<MovementComponent>(), ComponentType.ReadOnly<LocalToWorld>());
 
         NativeArray<Entity> entityArray = particleQuery.ToEntityArray(Allocator.TempJob);
-        NativeArray<LocalToWorld> localToWorldArray = particleQuery.ToComponentDataArray<LocalToWorld>(Allocator.TempJob);
+        // NativeArray<LocalToWorld> localToWorldArray = particleQuery.ToComponentDataArray<LocalToWorld>(Allocator.TempJob);
         // NativeArray<Translation> localToWorldArray = particleQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
         // NativeArray<Translation> localToWorldArray = particleQuery.ToComponentDataArray< ComponentType.ReadOnly<Translation>() >(Allocator.TempJob);
-        // NativeArray<float4x4> newParticleTransforms = new NativeArray<float4x4>(entityArray.Length, Allocator.TempJob);
         NativeArray<float3> newParticlePositions = new NativeArray<float3>(entityArray.Length, Allocator.TempJob);
 
-        // for (int i = 0; i < entityArray.Length; i++) {
-        //     boidArray[i] = new EntityWithLocalToWorld {
-        //         entity = entityArray[i],
-        //         localToWorld = localToWorldArray[i]
-        //     };
-        // }
+        NativeMultiHashMap<int, CellData> cellVsEntityPositions = new NativeMultiHashMap<int, CellData>(entityArray.Length, Allocator.TempJob);
 
-        // /*
+
         Entities
-            .WithName("MovementSystem_calculate")
             .WithAll<MovementComponent>()
-            .WithReadOnly(localToWorldArray)
             .WithBurst()
-            .ForEach((int entityInQueryIndex, ref Translation position, in MovementComponent movementComponent) => {
-                float3 boidPosition = position.Value;
-                
+            .ForEach((Entity entity, ref Translation translation) => {
+                int key = GetPositionHashMapKey(translation.Value);
+                cellVsEntityPositions.Add(key, new CellData {
+                    position = translation.Value,
+                });
+            }).Schedule();
+        
+
+        Entities
+            .WithName("MovementSystem_quadrant_calculate")
+            .WithReadOnly(cellVsEntityPositions)
+            .WithBurst()
+            .ForEach((int entityInQueryIndex, ref Translation translation, in MovementComponent movementComponent) => {
+
+                float3 boidPosition = translation.Value;
                 float3 attractRepelSum = float3.zero;
 
+
                 int boidsNearby = 0;
-                for (int otherBoidIndex = 0; otherBoidIndex < entityArray.Length; otherBoidIndex++) {
-                    // if (particle != boidArray[otherBoidIndex]) {
-                    if (otherBoidIndex != entityInQueryIndex) {
-                        
-                        float3 otherPosition = localToWorldArray[otherBoidIndex].Position;
+                int hashMapKey = GetPositionHashMapKey(boidPosition);
+                CellData otherEntityData;
+                NativeMultiHashMapIterator<int> nativeMultiHashMapIterator;
+                if(cellVsEntityPositions.TryGetFirstValue(hashMapKey, out otherEntityData, out nativeMultiHashMapIterator)) {
+                    do {
+                        float3 otherPosition = otherEntityData.position;
+                        if(otherPosition.Equals(boidPosition)) {
+                            continue;
+                        }
+
                         float3 diff = otherPosition - boidPosition;
-                        // float3 otherPosition = localToWorldArray[otherBoidIndex].Value;
                         float distToOtherBoid = math.length(diff); // TODO avoid square root here?
 
                         if (distToOtherBoid < movementComponent.perceptionRadius) {
                             boidsNearby++;
 
                             if(distToOtherBoid < movementComponent.repelRadius) {
-                                // attractRepelSum += -1 * movementComponent.repelWeight * (movementComponent.repelRadius - distToOtherBoid)/movementComponent.repelRadius * math.normalize(diff);
-                                attractRepelSum += -1 * movementComponent.repelWeight * math.normalize(diff) / math.pow(math.max(distToOtherBoid, 0.1f), 2);
+                                attractRepelSum += -1 * movementComponent.repelWeight * math.normalize(diff) / math.pow(math.max(distToOtherBoid, 0.2f), 2);
                             } else {
                                 attractRepelSum += movementComponent.attractWeight * math.normalize(diff);
                             }
                         }
-                    }
+
+                    } while (cellVsEntityPositions.TryGetNextValue(out otherEntityData, ref nativeMultiHashMapIterator));
                 }
-                // Debug.Log(string.Format("i={0}, nearby={1}", entityInQueryIndex, boidsNearby));
 
                 float3 force = float3.zero;
 
                 if (boidsNearby > 0) {
-                    // float3 separationForce = (seperationSum / boidsNearby)                * movementComponent.separationWeight;
-                    // float3 cohesionForce   = ((positionSum / boidsNearby) - boidPosition) * movementComponent.cohesionWeight;
-                    // float3 separationForce = (seperationSum / boidsNearby)                * movementComponent.separationWeight;
                     float3 attractRepelForce = (attractRepelSum / boidsNearby);
                     force += attractRepelForce;
                 }
@@ -104,9 +122,9 @@ public partial class MovementSystem : SystemBase {
                 force += valenceQuarkForce * movementComponent.valenceQuarkWeight;
 
                 if(math.length(boidPosition) > movementComponent.cageRadius) {
+                    // Maybe if the particle is outside the cage, it skips all other calculations?
                     float3 avoidCageForce = -math.normalize(boidPosition) * movementComponent.avoidCageWeight; // TODO this should be smoother, maybe exponential?
                     force += avoidCageForce;
-                    // Debug.Log(string.Format("boid outside cage, length={0}, i={1}", math.length(boidPosition), entityInQueryIndex));
                 }
 
                 // float3 velocity = localToWorld.Forward * boidSpeed;
@@ -116,46 +134,24 @@ public partial class MovementSystem : SystemBase {
                 // float3 velocity = math.forward(rotation.Value) * force * boidSpeed;
                 float3 velocity = force * movementComponent.boidSpeed;
 
+                // Debug.Log(string.Format("finished boid, i={0}, oldp={1}, f={2}", entityInQueryIndex, boidPosition, force));
                 newParticlePositions[entityInQueryIndex] = boidPosition + velocity * deltaTime;
-                // newParticlePositions[entityInQueryIndex] = position.Value + (new float3(0, 0.01f, 0));
-                    // localToWorld.Position + (velocity + new float3(0, 0.05f, 0)) * deltaTime,
-                    // position.Value + (new float3(0, 1f, 0))
-                    // localToWorld.Rotation,
-                    // rotation.Value,
-                    // new float3(1f)
-                // );
+                // newParticlePositions[entityInQueryIndex] = new float3(0.5);
                 // Debug.Log("calculating position of i=" + entityInQueryIndex + ", force=" + force);
 
             })
-            .WithDisposeOnCompletion(localToWorldArray)
-            .WithDisposeOnCompletion(entityArray)
+            // .WithDisposeOnCompletion(localToWorldArray)
+            // .WithDisposeOnCompletion(entityArray)
+            .WithDisposeOnCompletion(cellVsEntityPositions)
             .ScheduleParallel();
-        // */
-        // localToWorldArray.Dispose();
-        // entityArray.Dispose();
-
-        /*
-        Entities
-            .WithName("MovementSystem_calculate")
-            .WithAll<MovementComponent>()
-            .ForEach((int entityInQueryIndex, ref Rotation rotation, ref Translation position, in MovementComponent rotSpeedSpawnAndRemove) => {
-                // var _a = boidArray[0];
-                // var _b = localToWorldArray[0];
-                // var _c = entityArray[0];
-
-                float3 boidPosition = position.Value;
-                newParticlePositions[entityInQueryIndex] = boidPosition + new float3(0, 0.01f, 0);
-            }).ScheduleParallel();
-        */
 
         // /*
         Entities
             .WithName("MovementSystem_translate")
             .WithAll<MovementComponent>()
             .WithReadOnly(newParticlePositions)
-            // .WithBurst()
-            .ForEach((int entityInQueryIndex, ref Rotation rotation, ref Translation position, in MovementComponent rotSpeedSpawnAndRemove) => {
-                // rotation.Value = math.mul(math.normalize(rotation.Value), quaternion.AxisAngle(math.up(), rotSpeedSpawnAndRemove.RadiansPerSecond * deltaTime));
+            .WithBurst()
+            .ForEach((int entityInQueryIndex, ref Rotation rotation, ref Translation position) => {
                 // position.Value += new float3(0, 0.01f, 0);
                 position.Value = newParticlePositions[entityInQueryIndex];
                 // Debug.Log(string.Format("updated position of i={0} to {1}", entityInQueryIndex, position.Value));
@@ -164,7 +160,7 @@ public partial class MovementSystem : SystemBase {
             .ScheduleParallel();
         // */
 
-        // entityArray.Dispose();
+        entityArray.Dispose();
         // localToWorldArray.Dispose();
         // newParticlePositions.Dispose();
     }
