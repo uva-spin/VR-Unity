@@ -3,12 +3,13 @@ using UnityEngine;
 using Unity.Transforms;
 using Unity.Rendering;
 
+
+
 public class Spawner : MonoBehaviour {
 
     public int boidsToSpawn;
 
     private EntityManager entityManager;
-    private Entity entity;
     private EntityArchetype entityArchetype;
 
     // public Mesh mesh;
@@ -18,14 +19,17 @@ public class Spawner : MonoBehaviour {
     public GameObject prefab;
     private Entity prefabEntity;
 
-    public float boidSpeed;
-    public float perceptionRadius;
-    public float attractWeight;
-    public float repelWeight;
-    public float repelRadius;
-    public float cageRadius;
-    public float avoidCageWeight;
-    public float valenceQuarkWeight;
+    // public MovementComponent seaQuarkMovementComponent;
+    public MovementComponent seaGluonMovementComponent;
+
+    // public float boidSpeed;
+    // public float perceptionRadius;
+    // public float attractWeight;
+    // public float repelWeight;
+    // public float repelRadius;
+    // public float cageRadius;
+    // public float avoidCageWeight;
+    // public float valenceQuarkWeight;
 
     private void Start() {
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -36,7 +40,6 @@ public class Spawner : MonoBehaviour {
             typeof(RenderMesh),
             typeof(RenderBounds),
             typeof(MovementComponent));
-
 
         // Try scaling the mesh vertices directly?
         // meshModified = mesh;
@@ -66,22 +69,23 @@ public class Spawner : MonoBehaviour {
     private void spawnRandomParticle() {
         Entity e = entityManager.Instantiate(prefabEntity);
         
-         entityManager.SetComponentData(e, new Translation {
-            Value = UnityEngine.Random.insideUnitSphere * cageRadius
+        entityManager.SetComponentData(e, new Translation {
+            Value = UnityEngine.Random.insideUnitSphere * seaGluonMovementComponent.cageRadius
         });
         // entityManager.AddComponentData(e, new Rotation {
         //     Value = quaternion.EulerXYZ(new Vector3(0, 0, 0))
         // });
-        entityManager.AddComponentData(e, new MovementComponent {
-            boidSpeed = boidSpeed,
-            perceptionRadius = perceptionRadius,
-            attractWeight = attractWeight,
-            repelWeight = repelWeight,
-            repelRadius = repelRadius,
-            cageRadius = cageRadius,
-            avoidCageWeight = avoidCageWeight,
-            valenceQuarkWeight = valenceQuarkWeight,
-        });
+        // entityManager.AddComponentData(e, new MovementComponent {
+        //     boidSpeed = boidSpeed,
+        //     perceptionRadius = perceptionRadius,
+        //     attractWeight = attractWeight,
+        //     repelWeight = repelWeight,
+        //     repelRadius = repelRadius,
+        //     cageRadius = cageRadius,
+        //     avoidCageWeight = avoidCageWeight,
+        //     valenceQuarkWeight = valenceQuarkWeight,
+        // });
+        entityManager.AddComponentData(e, seaGluonMovementComponent);
     }
 
     /*

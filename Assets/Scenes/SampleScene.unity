@@ -4191,59 +4191,6 @@ ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 2009051508668605832, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
   m_PrefabInstance: {fileID: 1908597805}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1080163491
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1080163492}
-  - component: {fileID: 1080163493}
-  m_Layer: 0
-  m_Name: ParticleSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1080163492
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080163491}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1080163493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080163491}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc7bbfc4a023ac04ea655bae61863390, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  boidsToSpawn: 10000
-  prefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
-  boidSpeed: 1
-  perceptionRadius: 1.5
-  attractWeight: 1.2
-  repelWeight: 1.1
-  repelRadius: 0.8
-  cageRadius: 1.45
-  avoidCageWeight: 1.3
-  valenceQuarkWeight: 0.9
 --- !u!1 &1081727697
 GameObject:
   m_ObjectHideFlags: 0
@@ -7094,6 +7041,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8125098693503326303, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8125098693515741194, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
       propertyPath: m_Name
       value: Ring
@@ -7164,6 +7115,65 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
+--- !u!1 &1909472727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1909472729}
+  - component: {fileID: 1909472728}
+  m_Layer: 0
+  m_Name: Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1909472728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909472727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2fc70c9c46a0144682aea3d738badb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boidsToSpawn: 15000
+  prefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
+  seaGluonMovementComponent:
+    boidSpeed: 1
+    perceptionRadius: 0.12
+    attractWeight: 0
+    repelWeight: 0.6
+    repelRadius: 10000
+    momentum: 10
+    cageRadius: 1.5
+    avoidCageWeight: 2.5
+    valenceQuarkWeight: 1.3
+    oldVelocity:
+      x: 0
+      y: 0
+      z: 0
+--- !u!4 &1909472729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1909472727}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1946731470
 GameObject:
   m_ObjectHideFlags: 0

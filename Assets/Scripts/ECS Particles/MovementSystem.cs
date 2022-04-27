@@ -12,6 +12,7 @@ public struct CellData {
 }
 
 public partial class MovementSystem : SystemBase {
+    // Random random;
     // private struct EntityWithLocalToWorld {
     //     public Entity entity;
     //     public LocalToWorld localToWorld;
@@ -22,11 +23,11 @@ public partial class MovementSystem : SystemBase {
     // static GameObject valenceQuarkUpBlue;
 
     private static int GetPositionHashMapKey(float3 p) {
-        float cellSize = 1f;
+        float cellSize = 0.5f;
         // int yMultiplier = (int) cellSize*3;
         // int zMultiplier = (int) yMultiplier*3;
-        int yMultiplier = 3;
-        int zMultiplier = 9;
+        int yMultiplier = 6;
+        int zMultiplier = 36;
         return (int) (math.floor(p.x/cellSize) + yMultiplier*math.floor(p.y/cellSize) + zMultiplier*math.floor(p.z/cellSize));;
     }
 
@@ -56,6 +57,7 @@ public partial class MovementSystem : SystemBase {
 
         NativeMultiHashMap<int, CellData> cellVsEntityPositions = new NativeMultiHashMap<int, CellData>(entityArray.Length, Allocator.TempJob);
 
+        float3 fuzzMask = new float3(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
 
         Entities
             .WithAll<MovementComponent>()
@@ -72,14 +74,14 @@ public partial class MovementSystem : SystemBase {
             .WithName("MovementSystem_quadrant_calculate")
             .WithReadOnly(cellVsEntityPositions)
             .WithBurst()
-            .ForEach((int entityInQueryIndex, ref Translation translation, in MovementComponent movementComponent) => {
+            .ForEach((int entityInQueryIndex, ref Translation translation, ref MovementComponent movementComponent) => {
 
                 float3 boidPosition = translation.Value;
+                float3 boidPositionFuzzed = boidPosition + fuzzMask * ((entityInQueryIndex % 100) - 50)/500f;
                 float3 attractRepelSum = float3.zero;
 
-
                 int boidsNearby = 0;
-                int hashMapKey = GetPositionHashMapKey(boidPosition);
+                int hashMapKey = GetPositionHashMapKey(boidPositionFuzzed);
                 CellData otherEntityData;
                 NativeMultiHashMapIterator<int> nativeMultiHashMapIterator;
                 if(cellVsEntityPositions.TryGetFirstValue(hashMapKey, out otherEntityData, out nativeMultiHashMapIterator)) {
@@ -92,12 +94,12 @@ public partial class MovementSystem : SystemBase {
                         float3 diff = otherPosition - boidPosition;
                         float distToOtherBoid = math.length(diff); // TODO avoid square root here?
 
-                        if (distToOtherBoid < movementComponent.perceptionRadius) {
+                        if (distToOtherBoid < movementComponent.perceptionRadius) { // particle is too far away to consider
                             boidsNearby++;
 
-                            if(distToOtherBoid < movementComponent.repelRadius) {
+                            if(distToOtherBoid < movementComponent.repelRadius) { // repelled to this particle
                                 attractRepelSum += -1 * movementComponent.repelWeight * math.normalize(diff) / math.pow(math.max(distToOtherBoid, 0.2f), 2);
-                            } else {
+                            } else { // attracted to this particle
                                 attractRepelSum += movementComponent.attractWeight * math.normalize(diff);
                             }
                         }
@@ -116,9 +118,9 @@ public partial class MovementSystem : SystemBase {
                 float3 q1Dir = valenceQuarkDown - boidPosition;
                 float3 q2Dir = valenceQuarkUpRed - boidPosition;
                 float3 q3Dir = valenceQuarkUpBlue - boidPosition;
-                valenceQuarkForce += (q1Dir / math.max(0.01f, math.lengthsq(q1Dir)));
-                valenceQuarkForce += (q2Dir / math.max(0.01f, math.lengthsq(q2Dir)));
-                valenceQuarkForce += (q3Dir / math.max(0.01f, math.lengthsq(q3Dir)));
+                valenceQuarkForce += (q1Dir / math.max(0.2f, math.lengthsq(q1Dir)));
+                valenceQuarkForce += (q2Dir / math.max(0.2f, math.lengthsq(q2Dir)));
+                valenceQuarkForce += (q3Dir / math.max(0.2f, math.lengthsq(q3Dir)));
                 force += valenceQuarkForce * movementComponent.valenceQuarkWeight;
 
                 if(math.length(boidPosition) > movementComponent.cageRadius) {
@@ -133,11 +135,15 @@ public partial class MovementSystem : SystemBase {
                 // velocity = math.normalize(velocity) * boidSpeed;
                 // float3 velocity = math.forward(rotation.Value) * force * boidSpeed;
                 float3 velocity = force * movementComponent.boidSpeed;
+                velocity = (velocity + movementComponent.oldVelocity*movementComponent.momentum)/(movementComponent.momentum + 1);
+                float3 newPosition = boidPosition + velocity  * deltaTime;
+                float3 oldVelocity = boidPosition - newPosition;
 
-                // Debug.Log(string.Format("finished boid, i={0}, oldp={1}, f={2}", entityInQueryIndex, boidPosition, force));
-                newParticlePositions[entityInQueryIndex] = boidPosition + velocity * deltaTime;
-                // newParticlePositions[entityInQueryIndex] = new float3(0.5);
+                movementComponent.oldVelocity = velocity;
+
                 // Debug.Log("calculating position of i=" + entityInQueryIndex + ", force=" + force);
+                // Debug.Log(string.Format("finished boid, i={0}, oldp={1}, f={2}", entityInQueryIndex, boidPosition, force));
+                newParticlePositions[entityInQueryIndex] = newPosition;
 
             })
             // .WithDisposeOnCompletion(localToWorldArray)
