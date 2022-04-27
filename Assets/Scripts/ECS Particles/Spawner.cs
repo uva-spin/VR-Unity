@@ -4,36 +4,35 @@ using Unity.Transforms;
 using Unity.Rendering;
 
 
-
 public class Spawner : MonoBehaviour {
 
-    public int boidsToSpawn;
-
     private EntityManager entityManager;
-    private EntityArchetype entityArchetype;
+
+    public MovementComponent seaGluonMovementComponent;
+    public int gluonsToSpawn;
+    public GameObject gluonPrefab;
+    private EntityArchetype gluonArchetype;
+    private Entity gluonEntity;
+
+    public MovementComponent seaQuarkMovementComponent;
+    public int quarksToSpawn;
+    public GameObject quarkPrefab;
+    private EntityArchetype quarkArchetype;
+    private Entity quarkEntity;
 
     // public Mesh mesh;
     // public Material material;
-    // private Mesh meshModified;
-
-    public GameObject prefab;
-    private Entity prefabEntity;
-
-    // public MovementComponent seaQuarkMovementComponent;
-    public MovementComponent seaGluonMovementComponent;
-
-    // public float boidSpeed;
-    // public float perceptionRadius;
-    // public float attractWeight;
-    // public float repelWeight;
-    // public float repelRadius;
-    // public float cageRadius;
-    // public float avoidCageWeight;
-    // public float valenceQuarkWeight;
 
     private void Start() {
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        entityArchetype = entityManager.CreateArchetype(
+        gluonArchetype = entityManager.CreateArchetype(
+            typeof(Translation),
+            typeof(Rotation),
+            typeof(LocalToWorld),
+            typeof(RenderMesh),
+            typeof(RenderBounds),
+            typeof(MovementComponent));
+        quarkArchetype = entityManager.CreateArchetype(
             typeof(Translation),
             typeof(Rotation),
             typeof(LocalToWorld),
@@ -50,12 +49,42 @@ public class Spawner : MonoBehaviour {
         // mesh.RecalculateBounds();
 
         var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, null);
-        prefabEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(prefab, settings);
+        gluonEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(gluonPrefab, settings);
+        quarkEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(quarkPrefab, settings);
 
-        for(int i=0; i<boidsToSpawn; i++) {
-            spawnRandomParticle();
+        for(int i=0; i<gluonsToSpawn; i++) {
+            Entity e = spawnRandomParticle(gluonEntity, seaGluonMovementComponent.cageRadius);
+            entityManager.AddComponentData(e, seaGluonMovementComponent);
+            // entityManager.AddComponentData(e, new Rotation {
+            //     Value = quaternion.EulerXYZ(new Vector3(0, 0, 0))
+            // });
+            // entityManager.AddComponentData(e, new MovementComponent {
+            //     boidSpeed = boidSpeed,
+            //     perceptionRadius = perceptionRadius,
+            //     attractWeight = attractWeight,
+            //     repelWeight = repelWeight,
+            //     repelRadius = repelRadius,
+            //     cageRadius = cageRadius,
+            //     avoidCageWeight = avoidCageWeight,
+            //     valenceQuarkWeight = valenceQuarkWeight,
+            // });
+        }
+        for(int i=0; i<quarksToSpawn; i++) {
+            Entity e = spawnRandomParticle(quarkEntity, seaQuarkMovementComponent.cageRadius);
+            entityManager.AddComponentData(e, seaQuarkMovementComponent);
         }
     }
+
+    // For prefabs:
+    private Entity spawnRandomParticle(Entity target, float radius) {
+        Entity e = entityManager.Instantiate(target);
+        
+        entityManager.SetComponentData(e, new Translation {
+            Value = UnityEngine.Random.insideUnitSphere * radius
+        });
+        return e;
+    }
+
 
     // static Vector3[] scaleMeshVerts(Mesh m) {
     //     Vector3[] verts = m.vertices;
@@ -64,29 +93,6 @@ public class Spawner : MonoBehaviour {
     //     }
     //     return verts;
     // }
-
-    // For prefabs:
-    private void spawnRandomParticle() {
-        Entity e = entityManager.Instantiate(prefabEntity);
-        
-        entityManager.SetComponentData(e, new Translation {
-            Value = UnityEngine.Random.insideUnitSphere * seaGluonMovementComponent.cageRadius
-        });
-        // entityManager.AddComponentData(e, new Rotation {
-        //     Value = quaternion.EulerXYZ(new Vector3(0, 0, 0))
-        // });
-        // entityManager.AddComponentData(e, new MovementComponent {
-        //     boidSpeed = boidSpeed,
-        //     perceptionRadius = perceptionRadius,
-        //     attractWeight = attractWeight,
-        //     repelWeight = repelWeight,
-        //     repelRadius = repelRadius,
-        //     cageRadius = cageRadius,
-        //     avoidCageWeight = avoidCageWeight,
-        //     valenceQuarkWeight = valenceQuarkWeight,
-        // });
-        entityManager.AddComponentData(e, seaGluonMovementComponent);
-    }
 
     /*
     // For meshes:

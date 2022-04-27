@@ -7144,8 +7144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2fc70c9c46a0144682aea3d738badb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boidsToSpawn: 15000
-  prefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
   seaGluonMovementComponent:
     boidSpeed: 1
     perceptionRadius: 0.12
@@ -7160,6 +7158,24 @@ MonoBehaviour:
       x: 0
       y: 0
       z: 0
+  gluonsToSpawn: 1000
+  gluonPrefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
+  seaQuarkMovementComponent:
+    boidSpeed: 1
+    perceptionRadius: 0.5
+    attractWeight: 0
+    repelWeight: 0.6
+    repelRadius: 1000
+    momentum: 0
+    cageRadius: 1.5
+    avoidCageWeight: 2
+    valenceQuarkWeight: 0.5
+    oldVelocity:
+      x: 0
+      y: 0
+      z: 0
+  quarksToSpawn: 100
+  quarkPrefab: {fileID: 5561600251957936904, guid: f58b8247b0000944a9347ea55abaea03, type: 3}
 --- !u!4 &1909472729
 Transform:
   m_ObjectHideFlags: 0
