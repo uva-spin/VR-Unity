@@ -25,20 +25,13 @@ public class Spawner : MonoBehaviour {
 
     private void Start() {
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        gluonArchetype = entityManager.CreateArchetype(
-            typeof(Translation),
-            typeof(Rotation),
-            typeof(LocalToWorld),
-            typeof(RenderMesh),
-            typeof(RenderBounds),
-            typeof(MovementComponent));
-        quarkArchetype = entityManager.CreateArchetype(
-            typeof(Translation),
-            typeof(Rotation),
-            typeof(LocalToWorld),
-            typeof(RenderMesh),
-            typeof(RenderBounds),
-            typeof(MovementComponent));
+        // gluonArchetype = entityManager.CreateArchetype(
+        //     typeof(Translation),
+        //     typeof(Rotation),
+        //     typeof(LocalToWorld),
+        //     typeof(RenderMesh),
+        //     typeof(RenderBounds),
+        //     typeof(MovementComponent));
 
         // Try scaling the mesh vertices directly?
         // meshModified = mesh;
@@ -72,6 +65,7 @@ public class Spawner : MonoBehaviour {
         for(int i=0; i<quarksToSpawn; i++) {
             Entity e = spawnRandomParticle(quarkEntity, seaQuarkMovementComponent.cageRadius);
             entityManager.AddComponentData(e, seaQuarkMovementComponent);
+            entityManager.AddComponentData(e, new RotationComponent());
         }
     }
 

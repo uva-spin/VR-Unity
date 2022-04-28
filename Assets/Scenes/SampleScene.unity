@@ -7158,15 +7158,15 @@ MonoBehaviour:
       x: 0
       y: 0
       z: 0
-  gluonsToSpawn: 1000
+  gluonsToSpawn: 18000
   gluonPrefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
   seaQuarkMovementComponent:
-    boidSpeed: 1
-    perceptionRadius: 0.5
+    boidSpeed: 1.5
+    perceptionRadius: 0.3
     attractWeight: 0
-    repelWeight: 0.6
+    repelWeight: 0.3
     repelRadius: 1000
-    momentum: 0
+    momentum: 40
     cageRadius: 1.5
     avoidCageWeight: 2
     valenceQuarkWeight: 0.5

@@ -157,7 +157,7 @@ public partial class MovementSystem : SystemBase {
             .WithAll<MovementComponent>()
             .WithReadOnly(newParticlePositions)
             .WithBurst()
-            .ForEach((int entityInQueryIndex, ref Rotation rotation, ref Translation position) => {
+            .ForEach((int entityInQueryIndex, ref Translation position) => {
                 // position.Value += new float3(0, 0.01f, 0);
                 position.Value = newParticlePositions[entityInQueryIndex];
                 // Debug.Log(string.Format("updated position of i={0} to {1}", entityInQueryIndex, position.Value));
