@@ -64,7 +64,7 @@ public class Proton : MonoBehaviour
     {
         if (gluonIsInProcess) return;
 
-        Debug.Log("Generate Quarks");
+        //Debug.Log("Generate Quarks");
         int sourceID = Random.Range(0, 3);
         int targetID = Random.Range(0, 3);
 

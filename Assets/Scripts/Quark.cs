@@ -1,6 +1,8 @@
 ﻿using DG.Tweening;
 using System;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public enum QuarkColor
 {
@@ -62,8 +64,13 @@ public class Quark : MonoBehaviour
     private ParticleSystem.MainModule ma2;
     private ParticleSystem.MainModule ma3;
 
-    [SerializeField]
-    private AnimationCurve trailSizeCorrectionCurve;
+    [SerializeField] private AnimationCurve trailSizeCorrectionCurve;
+
+    //electricty and magnetism variable
+    [SerializeField] private List<Quark> collidingQuarks;
+    private const float constantOfProportionality = /*9000000000*/100;// constant of proportionality
+    [SerializeField] private float forceMultiplier; // change this to adjust the force, default is 1, all quarks should have same value
+    [SerializeField] private float charge; // +2/3 for UP quarks and -1/3 for DOWN quarks
 
     /// <summary>
     /// Set color to quark.
@@ -78,6 +85,36 @@ public class Quark : MonoBehaviour
     public float GetEstimatedSpeed()
     {
         return changeOrbit.EstimatedSpeed;
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject != null && other.gameObject.GetComponent<Quark>() != null && !collidingQuarks.Contains(other.gameObject.GetComponent<Quark>()))
+        {
+            collidingQuarks.Add(other.gameObject.GetComponent<Quark>()); // assumes it only collides with quarks, change if it interacts with other particles
+        }
+            
+
+    }
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject != null && other.gameObject.GetComponent<Quark>() != null)
+        {
+            collidingQuarks.Remove(other.gameObject.GetComponent<Quark>()); // assumes it only collides with quarks, change if it interacts with other particles
+        }
+    }
+    private void FixedUpdate()
+    {
+        Vector3 totalForce = new Vector3();
+        foreach(Quark quark in collidingQuarks)
+        {
+            //use sqr magnitude bc it is faster to computer (sqrt is expensive) and we need r^2 for equation of charge interactions
+            float distSquared = (gameObject.transform.position - quark.gameObject.transform.position).sqrMagnitude;
+            float force = this.charge * quark.charge * forceMultiplier * constantOfProportionality / distSquared;
+            Vector3 direction = (gameObject.transform.position - quark.gameObject.transform.position).normalized;// TODO figure this out
+            totalForce += force * direction;
+        }
+        //Debug.Log(totalForce);
+        gameObject.GetComponent<Rigidbody>().AddForce(totalForce, ForceMode.Force);
     }
 
     private void UpdateColor()
@@ -123,7 +160,11 @@ public class Quark : MonoBehaviour
 
     private void Start()
     {
-       
+        //Debug.Log(constantOfProportionality);
+        if (collidingQuarks == null)
+        {
+            collidingQuarks = new List<Quark>();
+        }
     }
 
     private void Update()

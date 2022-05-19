@@ -15,6 +15,10 @@ public class ShellVis : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(shell == null)//TODO
+        {
+            return;
+        }
         if(isVisible){
             shell.SetActive(true);
         }
