@@ -54,6 +54,7 @@
   <ItemGroup>
      <Compile Include="Assets\PathCreator\Examples\Scripts\PathSpawner.cs" />
      <Compile Include="Assets\_\Stuff\CodeMonkey\Utils\Button_UI.cs" />
+     <Compile Include="Assets\Scripts\GraphLocation.cs" />
      <Compile Include="Assets\_\Stuff\CodeMonkey\Utils\World_Mesh.cs" />
      <Compile Include="Assets\PathCreator\Core\Runtime\Objects\PathSpace.cs" />
      <Compile Include="Assets\Scripts\FluxTube.cs" />
@@ -112,7 +113,6 @@
      <Compile Include="Assets\_\Stuff\CodeMonkey\CMDebug.cs" />
      <Compile Include="Assets\_\Stuff\CodeMonkey\Utils\FunctionPeriodic.cs" />
      <Compile Include="Assets\Scripts\MenuScript.cs" />
-     <Compile Include="Assets\Scripts\GraphLocation.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\Shaders\Quark_Trail.shader" />

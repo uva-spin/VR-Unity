@@ -12,6 +12,7 @@ public class GraphLocation : MonoBehaviour
     {
         //GameObject point = Instantiate(dot, graph.transform); 
         //point.SetActive(true);
-        Debug.Log("quark has collided: " + collision);
+        Debug.Log("quark relative velocity: " + collision.relativeVelocity);
+        Debug.Log("quark contact: " + collision.GetContact(0).point);
     }
 }
