@@ -15,4 +15,5 @@ public struct MovementComponent : IComponentData {
     public float valenceQuarkWeight;
 
     public float3 oldVelocity;
+    public int gluonsNearby;
 }

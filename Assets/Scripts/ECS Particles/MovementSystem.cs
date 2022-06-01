@@ -80,7 +80,7 @@ public partial class MovementSystem : SystemBase {
                 float3 boidPositionFuzzed = boidPosition + fuzzMask * ((entityInQueryIndex % 100) - 50)/500f;
                 float3 attractRepelSum = float3.zero;
 
-                int boidsNearby = 0;
+                int gluonsNearby = 0;
                 int hashMapKey = GetPositionHashMapKey(boidPositionFuzzed);
                 CellData otherEntityData;
                 NativeMultiHashMapIterator<int> nativeMultiHashMapIterator;
@@ -95,7 +95,7 @@ public partial class MovementSystem : SystemBase {
                         float distToOtherBoid = math.length(diff); // TODO avoid square root here?
 
                         if (distToOtherBoid < movementComponent.perceptionRadius) { // particle is too far away to consider
-                            boidsNearby++;
+                            gluonsNearby++;
 
                             if(distToOtherBoid < movementComponent.repelRadius) { // repelled to this particle
                                 attractRepelSum += -1 * movementComponent.repelWeight * math.normalize(diff) / math.pow(math.max(distToOtherBoid, 0.2f), 2);
@@ -109,8 +109,8 @@ public partial class MovementSystem : SystemBase {
 
                 float3 force = float3.zero;
 
-                if (boidsNearby > 0) {
-                    float3 attractRepelForce = (attractRepelSum / boidsNearby);
+                if (gluonsNearby > 0) {
+                    float3 attractRepelForce = (attractRepelSum / gluonsNearby);
                     force += attractRepelForce;
                 }
 
@@ -140,6 +140,7 @@ public partial class MovementSystem : SystemBase {
                 float3 oldVelocity = boidPosition - newPosition;
 
                 movementComponent.oldVelocity = velocity;
+                movementComponent.gluonsNearby = gluonsNearby;
 
                 // Debug.Log("calculating position of i=" + entityInQueryIndex + ", force=" + force);
                 // Debug.Log(string.Format("finished boid, i={0}, oldp={1}, f={2}", entityInQueryIndex, boidPosition, force));
