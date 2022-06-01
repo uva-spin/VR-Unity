@@ -11,7 +11,7 @@ public partial class GluonColorSystem : SystemBase {
         float nScaled = Mathf.Clamp((float)n + 15f, 0, 80f)/80f;
         var c = Color.HSVToRGB(nScaled, 1f, 1f);
         // return new float4(n, 0, 255-n, 1)
-        return new float4(c.r, c.g, c.b, 1f);
+        return new float4(c.r, c.g, c.b, 0.3f);
     }
 
     protected override void OnUpdate() {
