@@ -66,6 +66,9 @@ public class Spawner : MonoBehaviour {
             Entity e = spawnRandomParticle(quarkEntity, seaQuarkMovementComponent.cageRadius);
             entityManager.AddComponentData(e, seaQuarkMovementComponent);
             entityManager.AddComponentData(e, new RotationComponent());
+            entityManager.AddComponentData(e, new SQColorComponent {
+                color = QuarkColor.Red
+            });
         }
     }
 
