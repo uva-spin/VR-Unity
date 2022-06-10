@@ -7146,27 +7146,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seaGluonMovementComponent:
     boidSpeed: 1
-    perceptionRadius: 0.18
-    attractWeight: 0
-    repelWeight: 0.6
-    repelRadius: 10000
-    momentum: 10
+    perceptionRadius: 0.14
+    repelWeight: 0.95
+    momentum: 7
     cageRadius: 1.5
-    avoidCageWeight: 3
-    valenceQuarkWeight: 2.2
+    avoidCageWeight: 3.5
+    valenceQuarkWeight: 3.2
     oldVelocity:
       x: 0
       y: 0
       z: 0
     gluonsNearby: 0
-  gluonsToSpawn: 18000
+  gluonsToSpawn: 20000
   gluonPrefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
   seaQuarkMovementComponent:
     boidSpeed: 1.5
     perceptionRadius: 0.3
-    attractWeight: 0
     repelWeight: 0.3
-    repelRadius: 1000
     momentum: 40
     cageRadius: 1.5
     avoidCageWeight: 2

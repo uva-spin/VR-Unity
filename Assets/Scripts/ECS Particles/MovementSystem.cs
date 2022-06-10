@@ -7,29 +7,12 @@ using Unity.Transforms;
 using UnityEngine;
 
 
-public struct CellData {
-    public float3 position;
-}
-
 public partial class MovementSystem : SystemBase {
     // Random random;
-    // private struct EntityWithLocalToWorld {
-    //     public Entity entity;
-    //     public LocalToWorld localToWorld;
-    // }
 
     // static GameObject valenceQuarkDown;
     // static GameObject valenceQuarkUpRed;
     // static GameObject valenceQuarkUpBlue;
-
-    private static int GetPositionHashMapKey(float3 p) {
-        float cellSize = 0.5f;
-        // int yMultiplier = (int) cellSize*3;
-        // int zMultiplier = (int) yMultiplier*3;
-        int yMultiplier = 6;
-        int zMultiplier = 36;
-        return (int) (math.floor(p.x/cellSize) + yMultiplier*math.floor(p.y/cellSize) + zMultiplier*math.floor(p.z/cellSize));;
-    }
 
     // protected override void OnCreate() {
     //     base.OnCreate();
@@ -39,72 +22,61 @@ public partial class MovementSystem : SystemBase {
     //     Debug.Log(string.Format("found valence quarks, down position={0}", valenceQuarkDown.transform.position));
     // }
 
-    // OnUpdate runs on the main thread.
+    private static float3 calculateValenceQuarkForce(float3 vectorToQuark) {
+        return vectorToQuark / math.max(0.1f, math.lengthsq(vectorToQuark));
+        // float lsq = math.lengthsq(vectorToQuark);
+        // if(lsq > 3) {
+        //     return float3.zero;
+        // } else {
+        //     return vectorToQuark / math.max(0.2f, lsq);
+        // }
+    }
+
     protected override void OnUpdate() {
+        const int maxGluonsNearby = 80;
+        const int maxGluonsToCheck = 1000;
+
         var deltaTime = Time.DeltaTime;
 
         float3 valenceQuarkDown = new float3(GameObject.Find("Quark3_Down").transform.position);
         float3 valenceQuarkUpRed = new float3(GameObject.Find("Quark1_Up_Red").transform.position);
         float3 valenceQuarkUpBlue = new float3(GameObject.Find("Quark2_Up_Blue").transform.position);
         
-        EntityQuery particleQuery = GetEntityQuery(ComponentType.ReadOnly<MovementComponent>(), ComponentType.ReadOnly<LocalToWorld>());
+        EntityQuery particleQuery = GetEntityQuery(ComponentType.ReadOnly<MovementComponent>(), ComponentType.ReadOnly<Translation>());
 
         NativeArray<Entity> entityArray = particleQuery.ToEntityArray(Allocator.TempJob);
         // NativeArray<LocalToWorld> localToWorldArray = particleQuery.ToComponentDataArray<LocalToWorld>(Allocator.TempJob);
-        // NativeArray<Translation> localToWorldArray = particleQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
         // NativeArray<Translation> localToWorldArray = particleQuery.ToComponentDataArray< ComponentType.ReadOnly<Translation>() >(Allocator.TempJob);
+        NativeArray<Translation> oldParticleTranslations = particleQuery.ToComponentDataArray<Translation>(Allocator.TempJob);
         NativeArray<float3> newParticlePositions = new NativeArray<float3>(entityArray.Length, Allocator.TempJob);
-
-        NativeMultiHashMap<int, CellData> cellVsEntityPositions = new NativeMultiHashMap<int, CellData>(entityArray.Length, Allocator.TempJob);
-
-        float3 fuzzMask = new float3(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
-
-        Entities
-            .WithAll<MovementComponent>()
-            .WithBurst()
-            .ForEach((Entity entity, ref Translation translation) => {
-                int key = GetPositionHashMapKey(translation.Value);
-                cellVsEntityPositions.Add(key, new CellData {
-                    position = translation.Value,
-                });
-            }).Schedule();
+        entityArray.Dispose();
         
+        Unity.Mathematics.Random r = new Unity.Mathematics.Random(999);
 
         Entities
             .WithName("MovementSystem_quadrant_calculate")
-            .WithReadOnly(cellVsEntityPositions)
+            .WithReadOnly(oldParticleTranslations)
             .WithBurst()
             .ForEach((int entityInQueryIndex, ref Translation translation, ref MovementComponent movementComponent) => {
 
                 float3 boidPosition = translation.Value;
-                float3 boidPositionFuzzed = boidPosition + fuzzMask * ((entityInQueryIndex % 100) - 50)/500f;
                 float3 attractRepelSum = float3.zero;
 
                 int gluonsNearby = 0;
-                int hashMapKey = GetPositionHashMapKey(boidPositionFuzzed);
-                CellData otherEntityData;
-                NativeMultiHashMapIterator<int> nativeMultiHashMapIterator;
-                if(cellVsEntityPositions.TryGetFirstValue(hashMapKey, out otherEntityData, out nativeMultiHashMapIterator)) {
-                    do {
-                        float3 otherPosition = otherEntityData.position;
-                        if(otherPosition.Equals(boidPosition)) {
-                            continue;
-                        }
+                int gluonsChecked = 0;
+                while (gluonsChecked < maxGluonsToCheck && gluonsNearby < maxGluonsNearby) {
+                    // float3 otherPosition = oldParticleTranslations[gluonsChecked].Value;
+                    // float3 otherPosition = GetComponentDataFromEntity<Translation>(entityArray[0]);
+                    float3 otherPosition = oldParticleTranslations[r.NextInt(0, oldParticleTranslations.Length)].Value;
+                    
+                    gluonsChecked++;
+                    float3 diff = otherPosition - boidPosition;
+                    float distToOtherBoid = math.length(diff); // TODO avoid square root here?
 
-                        float3 diff = otherPosition - boidPosition;
-                        float distToOtherBoid = math.length(diff); // TODO avoid square root here?
-
-                        if (distToOtherBoid < movementComponent.perceptionRadius) { // particle is too far away to consider
-                            gluonsNearby++;
-
-                            if(distToOtherBoid < movementComponent.repelRadius) { // repelled to this particle
-                                attractRepelSum += -1 * movementComponent.repelWeight * math.normalize(diff) / math.pow(math.max(distToOtherBoid, 0.2f), 2);
-                            } else { // attracted to this particle
-                                attractRepelSum += movementComponent.attractWeight * math.normalize(diff);
-                            }
-                        }
-
-                    } while (cellVsEntityPositions.TryGetNextValue(out otherEntityData, ref nativeMultiHashMapIterator));
+                    if (distToOtherBoid < movementComponent.perceptionRadius) { // particle is close enough to consider
+                        gluonsNearby++;
+                        attractRepelSum += -1 * movementComponent.repelWeight * math.normalize(diff) / math.pow(math.max(distToOtherBoid, 0.2f), 2);
+                    }
                 }
 
                 float3 force = float3.zero;
@@ -115,12 +87,9 @@ public partial class MovementSystem : SystemBase {
                 }
 
                 float3 valenceQuarkForce = float3.zero;
-                float3 q1Dir = valenceQuarkDown - boidPosition;
-                float3 q2Dir = valenceQuarkUpRed - boidPosition;
-                float3 q3Dir = valenceQuarkUpBlue - boidPosition;
-                valenceQuarkForce += (q1Dir / math.max(0.2f, math.lengthsq(q1Dir)));
-                valenceQuarkForce += (q2Dir / math.max(0.2f, math.lengthsq(q2Dir)));
-                valenceQuarkForce += (q3Dir / math.max(0.2f, math.lengthsq(q3Dir)));
+                valenceQuarkForce += calculateValenceQuarkForce(valenceQuarkDown - boidPosition);
+                valenceQuarkForce += calculateValenceQuarkForce(valenceQuarkUpRed - boidPosition);
+                valenceQuarkForce += calculateValenceQuarkForce(valenceQuarkUpBlue - boidPosition);
                 force += valenceQuarkForce * movementComponent.valenceQuarkWeight;
 
                 if(math.length(boidPosition) > movementComponent.cageRadius) {
@@ -129,11 +98,6 @@ public partial class MovementSystem : SystemBase {
                     force += avoidCageForce;
                 }
 
-                // float3 velocity = localToWorld.Forward * boidSpeed;
-                // float3 velocity = math.forward(rotation.Value) * boidSpeed;
-                // velocity += force * deltaTime;
-                // velocity = math.normalize(velocity) * boidSpeed;
-                // float3 velocity = math.forward(rotation.Value) * force * boidSpeed;
                 float3 velocity = force * movementComponent.boidSpeed;
                 velocity = (velocity + movementComponent.oldVelocity*movementComponent.momentum)/(movementComponent.momentum + 1);
                 float3 newPosition = boidPosition + velocity  * deltaTime;
@@ -142,14 +106,11 @@ public partial class MovementSystem : SystemBase {
                 movementComponent.oldVelocity = velocity;
                 movementComponent.gluonsNearby = gluonsNearby;
 
-                // Debug.Log("calculating position of i=" + entityInQueryIndex + ", force=" + force);
-                // Debug.Log(string.Format("finished boid, i={0}, oldp={1}, f={2}", entityInQueryIndex, boidPosition, force));
                 newParticlePositions[entityInQueryIndex] = newPosition;
 
             })
-            // .WithDisposeOnCompletion(localToWorldArray)
+            .WithDisposeOnCompletion(oldParticleTranslations)
             // .WithDisposeOnCompletion(entityArray)
-            .WithDisposeOnCompletion(cellVsEntityPositions)
             .ScheduleParallel();
 
         // /*
@@ -167,7 +128,7 @@ public partial class MovementSystem : SystemBase {
             .ScheduleParallel();
         // */
 
-        entityArray.Dispose();
+        // entityArray.Dispose();
         // localToWorldArray.Dispose();
         // newParticlePositions.Dispose();
     }

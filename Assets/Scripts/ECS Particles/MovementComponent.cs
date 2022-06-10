@@ -6,9 +6,9 @@ using Unity.Mathematics;
 public struct MovementComponent : IComponentData {
     public float boidSpeed;
     public float perceptionRadius;
-    public float attractWeight;
+    // public float attractWeight; // attraction behavior didn't seem very impactful and was confusing to implement
     public float repelWeight;
-    public float repelRadius;
+    // public float repelRadius; // this separation is only needed when considering attraction plus repelling
     public int momentum;
     public float cageRadius;
     public float avoidCageWeight;
