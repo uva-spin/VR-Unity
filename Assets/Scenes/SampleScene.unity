@@ -7126,7 +7126,7 @@ GameObject:
   - component: {fileID: 1909472729}
   - component: {fileID: 1909472728}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: GluonSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7141,10 +7141,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1909472727}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fc70c9c46a0144682aea3d738badb7, type: 3}
+  m_Script: {fileID: 11500000, guid: ab465ccecf3c9c54d8da1f4f9bf3637c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seaGluonMovementComponent:
+  gluonMovementComponent:
     boidSpeed: 1
     perceptionRadius: 0.14
     repelWeight: 0.95
@@ -7159,21 +7159,6 @@ MonoBehaviour:
     gluonsNearby: 0
   gluonsToSpawn: 20000
   gluonPrefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
-  seaQuarkMovementComponent:
-    boidSpeed: 1.5
-    perceptionRadius: 0.3
-    repelWeight: 0.3
-    momentum: 40
-    cageRadius: 1.5
-    avoidCageWeight: 2
-    valenceQuarkWeight: 0.5
-    oldVelocity:
-      x: 0
-      y: 0
-      z: 0
-    gluonsNearby: 0
-  quarksToSpawn: 0
-  quarkPrefab: {fileID: 5561600251957936904, guid: f58b8247b0000944a9347ea55abaea03, type: 3}
 --- !u!4 &1909472729
 Transform:
   m_ObjectHideFlags: 0
