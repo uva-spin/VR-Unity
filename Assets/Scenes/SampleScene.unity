@@ -4417,6 +4417,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1137225807}
   m_CullTransparentMesh: 1
+--- !u!1 &1140408395
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1140408397}
+  - component: {fileID: 1140408396}
+  m_Layer: 0
+  m_Name: SeaQuarkSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1140408396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140408395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca12938c608c4b84ba81edb3cb7e167a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6972975766535982195, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+  virtuality: 0.3
+  x: 0
+  spawnIntervalSeconds: 1
+--- !u!4 &1140408397
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140408395}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1160112377
 GameObject:
   m_ObjectHideFlags: 0
@@ -7126,7 +7173,7 @@ GameObject:
   - component: {fileID: 1909472729}
   - component: {fileID: 1909472728}
   m_Layer: 0
-  m_Name: Spawner
+  m_Name: GluonSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7141,7 +7188,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1909472727}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2fc70c9c46a0144682aea3d738badb7, type: 3}
+  m_Script: {fileID: 11500000, guid: ab465ccecf3c9c54d8da1f4f9bf3637c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   seaGluonMovementComponent:
@@ -7157,23 +7204,8 @@ MonoBehaviour:
       y: 0
       z: 0
     gluonsNearby: 0
-  gluonsToSpawn: 20000
+  gluonsToSpawn: 5000
   gluonPrefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
-  seaQuarkMovementComponent:
-    boidSpeed: 1.5
-    perceptionRadius: 0.3
-    repelWeight: 0.3
-    momentum: 40
-    cageRadius: 1.5
-    avoidCageWeight: 2
-    valenceQuarkWeight: 0.5
-    oldVelocity:
-      x: 0
-      y: 0
-      z: 0
-    gluonsNearby: 0
-  quarksToSpawn: 0
-  quarkPrefab: {fileID: 5561600251957936904, guid: f58b8247b0000944a9347ea55abaea03, type: 3}
 --- !u!4 &1909472729
 Transform:
   m_ObjectHideFlags: 0
@@ -7396,6 +7428,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1955945212}
   m_CullTransparentMesh: 1
+--- !u!1001 &1964330710
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6972975766535982195, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_Name
+      value: SeaQuark
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982195, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.053472012
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6972975766535982204, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
 --- !u!1 &1986284172
 GameObject:
   m_ObjectHideFlags: 0

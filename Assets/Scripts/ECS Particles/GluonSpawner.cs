@@ -3,8 +3,7 @@ using UnityEngine;
 using Unity.Transforms;
 using Unity.Rendering;
 
-
-public class Spawner : MonoBehaviour {
+public class GluonSpawner : MonoBehaviour {
 
     private EntityManager entityManager;
 
@@ -13,12 +12,6 @@ public class Spawner : MonoBehaviour {
     public GameObject gluonPrefab;
     private EntityArchetype gluonArchetype;
     private Entity gluonEntity;
-
-    public MovementComponent seaQuarkMovementComponent;
-    public int quarksToSpawn;
-    public GameObject quarkPrefab;
-    private EntityArchetype quarkArchetype;
-    private Entity quarkEntity;
 
     // public Mesh mesh;
     // public Material material;
@@ -43,32 +36,10 @@ public class Spawner : MonoBehaviour {
 
         var settings = GameObjectConversionSettings.FromWorld(World.DefaultGameObjectInjectionWorld, null);
         gluonEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(gluonPrefab, settings);
-        quarkEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(quarkPrefab, settings);
 
         for(int i=0; i<gluonsToSpawn; i++) {
             Entity e = spawnRandomParticle(gluonEntity, seaGluonMovementComponent.cageRadius);
             entityManager.AddComponentData(e, seaGluonMovementComponent);
-            // entityManager.AddComponentData(e, new Rotation {
-            //     Value = quaternion.EulerXYZ(new Vector3(0, 0, 0))
-            // });
-            // entityManager.AddComponentData(e, new MovementComponent {
-            //     boidSpeed = boidSpeed,
-            //     perceptionRadius = perceptionRadius,
-            //     attractWeight = attractWeight,
-            //     repelWeight = repelWeight,
-            //     repelRadius = repelRadius,
-            //     cageRadius = cageRadius,
-            //     avoidCageWeight = avoidCageWeight,
-            //     valenceQuarkWeight = valenceQuarkWeight,
-            // });
-        }
-        for(int i=0; i<quarksToSpawn; i++) {
-            Entity e = spawnRandomParticle(quarkEntity, seaQuarkMovementComponent.cageRadius);
-            entityManager.AddComponentData(e, seaQuarkMovementComponent);
-            entityManager.AddComponentData(e, new RotationComponent());
-            // entityManager.AddComponentData(e, new SQColorComponent {
-            //     color = QuarkColor.Red
-            // });
         }
     }
 
@@ -82,14 +53,15 @@ public class Spawner : MonoBehaviour {
         return e;
     }
 
-
-    // static Vector3[] scaleMeshVerts(Mesh m) {
-    //     Vector3[] verts = m.vertices;
-    //     for(int i=0; i<verts.Length; i++) {
-    //         // verts[i] *= 0.05f;
-    //     }
-    //     return verts;
-    // }
+    /*
+    static Vector3[] scaleMeshVerts(Mesh m) {
+        Vector3[] verts = m.vertices;
+        for(int i=0; i<verts.Length; i++) {
+            // verts[i] *= 0.05f;
+        }
+        return verts;
+    }
+    */
 
     /*
     // For meshes:

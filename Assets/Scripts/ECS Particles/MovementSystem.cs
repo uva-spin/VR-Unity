@@ -38,9 +38,9 @@ public partial class MovementSystem : SystemBase {
 
         var deltaTime = Time.DeltaTime;
 
-        float3 valenceQuarkDown = new float3(GameObject.Find("Quark3_Down").transform.position);
-        float3 valenceQuarkUpRed = new float3(GameObject.Find("Quark1_Up_Red").transform.position);
-        float3 valenceQuarkUpBlue = new float3(GameObject.Find("Quark2_Up_Blue").transform.position);
+        float3 valenceQuarkDown = (float3) (GameObject.Find("Quark3_Down").transform.position); // TODO replace Find() with FindWithTag() for performance
+        float3 valenceQuarkUpRed = (float3) (GameObject.Find("Quark1_Up_Red").transform.position);
+        float3 valenceQuarkUpBlue = (float3) (GameObject.Find("Quark2_Up_Blue").transform.position);
         
         EntityQuery particleQuery = GetEntityQuery(ComponentType.ReadOnly<MovementComponent>(), ComponentType.ReadOnly<Translation>());
 

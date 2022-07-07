@@ -679,6 +679,7 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     1: ENABLE_HYBRID_RENDERER_V2
+    7: ENABLE_HYBRID_RENDERER_V2
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
