@@ -37,9 +37,19 @@ public class SeaQuark : MonoBehaviour {
 
         Vector3 dir = valenceQuarkForce * 2.3f;
         dirAvg = dirAvg * 0.9f + dir * 0.1f;
-        Vector3 dirVirtuality = dir + (RandomUnitVector() * virtuality * 10f);
 
-        transform.position +=  dirVirtuality * Time.deltaTime;
+        if(virtuality > 0.1f) {
+            Vector3 shake = RandomUnitVector() * virtuality * 10f;
+            dir += shake;
+
+            if(UnityEngine.Random.Range(0, 900 - (int)(virtuality * 800)) == 1) { // range(0,~100) good for maximum jumpiness
+                Vector3 jump = RandomUnitVector() * 150f;
+                dir += jump;
+                dirAvg = dir; // reset position history - also makes rotation look random
+            }
+        }
+
+        transform.position += dir * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(dirAvg, Vector3.up);
 
         if(HP < 0) {
