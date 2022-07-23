@@ -585,7 +585,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &3012995215356704228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,9 +636,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menu: {fileID: 0}
   speedSlider: {fileID: 0}
+  trailWidthSlider: {fileID: 0}
+  sliderComp: {fileID: 0}
+  trailWidths: {fileID: 0}
   openMenuButton: {fileID: 0}
+  closeMenuButton: {fileID: 0}
+  quark1: {fileID: 0}
+  quark2: {fileID: 0}
+  quark3: {fileID: 0}
   menuActive: 0
   openMenuButtonActive: 1
+  closeMenuButtonActive: 0
 --- !u!1 &3012995215575719673
 GameObject:
   m_ObjectHideFlags: 0

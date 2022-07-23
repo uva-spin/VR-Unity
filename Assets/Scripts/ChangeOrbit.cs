@@ -134,7 +134,7 @@ public class ChangeOrbit : MonoBehaviour
             tween?.Kill();
             // Smoothly blend current radius to a new value
             tween = DOTween.To(() => currentRadius, v => currentRadius = v, targetRadius, t);
-            print("hello");
+            // print("hello");
             tween.SetEase(Ease.InOutQuad);
 
             yield return new WaitForSeconds(timeOnTheSameOrbit);
