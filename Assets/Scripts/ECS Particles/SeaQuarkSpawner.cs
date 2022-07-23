@@ -8,6 +8,7 @@ public class SeaQuarkSpawner : MonoBehaviour {
     public float virtuality;
     public float x;
     public float spawnIntervalSeconds = 1f;
+    public float cageRadius;
 
     private float lastSpawnTime;
     private float3 spawnPosition;
@@ -33,6 +34,7 @@ public class SeaQuarkSpawner : MonoBehaviour {
         q.transform.position = this.spawnPosition;
 
         var script = q.GetComponent<SeaQuark>();
+        script.cageRadius = this.cageRadius;
         script.virtuality = this.virtuality;
         script.x = this.x;
     }

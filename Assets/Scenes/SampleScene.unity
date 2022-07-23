@@ -4466,9 +4466,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6972975766535982195, guid: 87381a99f65d6a144b6fbd52f2b1ee2a, type: 3}
-  virtuality: 0.3
+  virtuality: 0.1
   x: 0
   spawnIntervalSeconds: 1
+  cageRadius: 1.8
 --- !u!4 &1140408397
 Transform:
   m_ObjectHideFlags: 0
