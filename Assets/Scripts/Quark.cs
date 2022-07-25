@@ -62,6 +62,8 @@ public class Quark : MonoBehaviour
     private ParticleSystem.MainModule ma2;
     private ParticleSystem.MainModule ma3;
 
+    public GameObject shell;
+
     [SerializeField]
     private AnimationCurve trailSizeCorrectionCurve;
 
@@ -86,13 +88,8 @@ public class Quark : MonoBehaviour
         // coreMaterial.SetColor("_Color", QuarkSettings.GetColorRGB(quarkColor));
         // glowMaterial.SetColor("_Color", QuarkSettings.GetColorRGB(quarkColor));
         // trailRenderer.material.SetColor("_Color", QuarkSettings.GetColorRGB(quarkColor));
-        ma1 = partSys1.main;
-        ma2 = partSys2.main;
-        ma3 = partSys3.main;
-        ma1.startColor = QuarkSettings.GetColorRGB(quarkColor);
-        ma2.startColor = QuarkSettings.GetColorRGB(quarkColor);
-        ma3.startColor = QuarkSettings.GetColorRGB(quarkColor);
-        
+        shell.GetComponent<Renderer>().material.SetColor("_BaseColor", QuarkSettings.GetColorRGB(quarkColor) * Mathf.Pow(2, 1));
+
 
 
 

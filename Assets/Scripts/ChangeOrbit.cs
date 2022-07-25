@@ -69,6 +69,7 @@ public class ChangeOrbit : MonoBehaviour
     public float rad;
     public Vector3 tempRotVector;
     public int polarizationAxis = 2;
+    public Quaternion SelfRotation;
 
     /// <summary>
     /// Enable or disable small orbits mode for this quark.
@@ -134,7 +135,7 @@ public class ChangeOrbit : MonoBehaviour
             tween?.Kill();
             // Smoothly blend current radius to a new value
             tween = DOTween.To(() => currentRadius, v => currentRadius = v, targetRadius, t);
-            print("hello");
+            // print("hello");
             tween.SetEase(Ease.InOutQuad);
 
             yield return new WaitForSeconds(timeOnTheSameOrbit);
@@ -180,6 +181,7 @@ public class ChangeOrbit : MonoBehaviour
         // float speed = orbitalVelocity * QuarkSettings.Instance.GlobalSpeedMultiplier;
         float speed = orbitalVelocity;
         Vector3 rotated = Quaternion.AngleAxis(speed / pos.magnitude * Time.deltaTime, rotationVector) * pos;
+        SelfRotation = Quaternion.AngleAxis(speed * Time.deltaTime, rotationVector);
         // Vector3 rotated = Quaternion.AngleAxis(speed * Time.deltaTime, rotationVector) * pos;
 
 
