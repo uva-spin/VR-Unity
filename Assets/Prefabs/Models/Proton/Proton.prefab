@@ -48,7 +48,7 @@ GameObject:
   - component: {fileID: 264284009461599865}
   m_Layer: 8
   m_Name: Quark3_Down
-  m_TagString: Untagged
+  m_TagString: Quark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,6 +92,10 @@ MonoBehaviour:
   Radius: 0.5
   trailWidth: 0
   trailTime: 0
+  f: 0
+  partSys1: {fileID: 0}
+  partSys2: {fileID: 0}
+  partSys3: {fileID: 0}
   trailSizeCorrectionCurve:
     serializedVersion: 2
     m_Curve:
@@ -133,6 +137,11 @@ MonoBehaviour:
   orbitalVelocity: -50000
   timeOnTheSameOrbit: 5
   orbitChangeVelocity: 150
+  isPolarized: 0
+  currentRadius: 1
+  rad: 0
+  tempRotVector: {x: 0, y: 0, z: 0}
+  polarizationAxis: 2
 --- !u!96 &264284009461599846
 TrailRenderer:
   serializedVersion: 2
@@ -564,7 +573,7 @@ GameObject:
   - component: {fileID: 264284009930100675}
   m_Layer: 8
   m_Name: Quark1_Up_Red
-  m_TagString: Untagged
+  m_TagString: Quark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -608,6 +617,10 @@ MonoBehaviour:
   Radius: 0.5
   trailWidth: 0
   trailTime: 0
+  f: 0
+  partSys1: {fileID: 0}
+  partSys2: {fileID: 0}
+  partSys3: {fileID: 0}
   trailSizeCorrectionCurve:
     serializedVersion: 2
     m_Curve:
@@ -649,6 +662,11 @@ MonoBehaviour:
   orbitalVelocity: 50000
   timeOnTheSameOrbit: 5
   orbitChangeVelocity: 150
+  isPolarized: 0
+  currentRadius: 1
+  rad: 0
+  tempRotVector: {x: 0, y: 0, z: 0}
+  polarizationAxis: 2
 --- !u!96 &264284009930100691
 TrailRenderer:
   serializedVersion: 2
@@ -1242,7 +1260,7 @@ GameObject:
   - component: {fileID: 264284010244169441}
   m_Layer: 8
   m_Name: Quark2_Up_Blue
-  m_TagString: Untagged
+  m_TagString: Quark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1286,6 +1304,10 @@ MonoBehaviour:
   Radius: 0.5
   trailWidth: 0
   trailTime: 0
+  f: 0
+  partSys1: {fileID: 0}
+  partSys2: {fileID: 0}
+  partSys3: {fileID: 0}
   trailSizeCorrectionCurve:
     serializedVersion: 2
     m_Curve:
@@ -1327,6 +1349,11 @@ MonoBehaviour:
   orbitalVelocity: 50000
   timeOnTheSameOrbit: 5
   orbitChangeVelocity: 150
+  isPolarized: 0
+  currentRadius: 1
+  rad: 0
+  tempRotVector: {x: 0, y: 0, z: 0}
+  polarizationAxis: 2
 --- !u!96 &264284010244169454
 TrailRenderer:
   serializedVersion: 2
@@ -7410,7 +7437,7 @@ GameObject:
   - component: {fileID: 2009051508099716096}
   m_Layer: 8
   m_Name: Blue
-  m_TagString: Quark
+  m_TagString: QuarkMesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26835,7 +26862,7 @@ GameObject:
   - component: {fileID: 5663761652600925538}
   m_Layer: 8
   m_Name: Green
-  m_TagString: Quark
+  m_TagString: QuarkMesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60994,6 +61021,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedSlider: {fileID: 0}
   quarkSpeed: 5.01
+  polarized: 1
+  quark1: {fileID: 0}
+  quark2: {fileID: 0}
+  quark3: {fileID: 0}
+  polarizationAxis: 0
 --- !u!1 &8125098695082942655
 GameObject:
   m_ObjectHideFlags: 0
@@ -61007,7 +61039,7 @@ GameObject:
   - component: {fileID: 8125098695082942641}
   m_Layer: 8
   m_Name: Red
-  m_TagString: Quark
+  m_TagString: QuarkMesh
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

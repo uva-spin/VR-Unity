@@ -38,7 +38,7 @@ public class GluonMovement : MonoBehaviour
     void Update()
     {
         if(Vector3.Distance(gluon1.position, targetPoint.position) < 0.05){
-            if(targetPoint.CompareTag("Quark"))
+            if(targetPoint.CompareTag("QuarkMesh"))
             {
                 ParticleInfo info = targetPoint.GetComponent<ParticleInfo>();
                 switch(info.partColor){

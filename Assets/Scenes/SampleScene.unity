@@ -7157,7 +7157,7 @@ MonoBehaviour:
       y: 0
       z: 0
     gluonsNearby: 0
-  gluonsToSpawn: 20000
+  gluonsToSpawn: 60000
   gluonPrefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
 --- !u!4 &1909472729
 Transform:
