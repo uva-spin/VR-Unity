@@ -84,10 +84,14 @@ public class Quark : MonoBehaviour
 
     private void UpdateColor()
     {
-        // sphereMaterial.SetColor("_Color", QuarkSettings.GetColorRGB(quarkColor));
-        // coreMaterial.SetColor("_Color", QuarkSettings.GetColorRGB(quarkColor));
-        // glowMaterial.SetColor("_Color", QuarkSettings.GetColorRGB(quarkColor));
-        // trailRenderer.material.SetColor("_Color", QuarkSettings.GetColorRGB(quarkColor));
+     
+        ma1 = partSys1.main;
+        ma3 = partSys2.main;
+        Color GlowColor = QuarkSettings.GetColorRGB(quarkColor);
+        GlowColor.a = 0.1f;
+        ma1.startColor = GlowColor;
+        ma3.startColor = GlowColor;
+
         shell.GetComponent<Renderer>().material.SetColor("_BaseColor", QuarkSettings.GetColorRGB(quarkColor) * Mathf.Pow(2, 1));
 
 

@@ -84,9 +84,12 @@ public class Spawner : MonoBehaviour {
         
     }
 
-    public void changeSGQuantity(int numOfSG)
+    public void changeSetting(int numOfSG)
     {
-        gluonsToSpawn = numOfSG;
+        if (numOfSG != -1)
+        {
+           gluonsToSpawn = numOfSG;
+        }
         entityManager.DestroyAndResetAllEntities();
         Start();
     }
