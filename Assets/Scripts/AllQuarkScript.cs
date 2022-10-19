@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class AllQuarkScript : MonoBehaviour
 {
     public Slider speedSlider;
+    public Slider forceSlider;
     public float quarkSpeed = 3;
     public bool polarized = true;
     public Transform quark1;
@@ -17,7 +18,7 @@ public class AllQuarkScript : MonoBehaviour
 
     public int polarizationAxis = 0;
 
-
+    public bool forceLineVis = true;
 
     // Start is called before the first frame update
     void Start()
@@ -63,5 +64,10 @@ public class AllQuarkScript : MonoBehaviour
         c1.polarizationAxis = 2;
         c2.polarizationAxis = 2;
         c3.polarizationAxis = 2;
+    }
+
+    public void Disable()
+    {
+        forceLineVis = !forceLineVis;
     }
 }

@@ -7,7 +7,7 @@ public class GluonSpawner : MonoBehaviour {
 
     private EntityManager entityManager;
 
-    public MovementComponent gluonMovementComponent;
+    public MovementComponent seaGluonMovementComponent;
     public int gluonsToSpawn;
     public GameObject gluonPrefab;
     private EntityArchetype gluonArchetype;
@@ -38,8 +38,8 @@ public class GluonSpawner : MonoBehaviour {
         gluonEntity = GameObjectConversionUtility.ConvertGameObjectHierarchy(gluonPrefab, settings);
 
         for(int i=0; i<gluonsToSpawn; i++) {
-            Entity e = spawnRandomParticle(gluonEntity, gluonMovementComponent.cageRadius);
-            entityManager.AddComponentData(e, gluonMovementComponent);
+            Entity e = spawnRandomParticle(gluonEntity, seaGluonMovementComponent.cageRadius);
+            entityManager.AddComponentData(e, seaGluonMovementComponent);
         }
     }
 
