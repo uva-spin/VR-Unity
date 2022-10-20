@@ -35,6 +35,7 @@ public class SeaQuarkSpawner : MonoBehaviour {
 
         q.transform.position = UnityEngine.Random.insideUnitCircle;//this.spawnPosition;
 
+        /*
         if (FindObjectOfType<EMField>() && !FindObjectOfType<EMField>().seaLines) { //If seaquark forcelines are disabled, then disable them
             LineRenderer[] lines = q.GetComponentsInChildren<LineRenderer>();
             Keyframe key = new Keyframe();
@@ -43,18 +44,19 @@ public class SeaQuarkSpawner : MonoBehaviour {
                 line.widthCurve = new AnimationCurve(new Keyframe[] { key, key }); //Sets the width curve to 0 (you probably could just remove it entirely, but it might cause problems)
             }
         }
-
+        */
         var script = q.GetComponent<SeaQuark>();
         script.cageRadius = this.cageRadius;
         script.virtuality = this.virtuality;
         script.x = this.x;
 
+        /*  Currently Disabled until Non-physics based sea quarks implemented
         if (FindObjectOfType<EMField>() && !FindObjectOfType<EMField>().physQuarks) {
             foreach (Rigidbody r in q.GetComponentsInChildren<Rigidbody>()) {
                 Destroy(r);
             }
         };
-
+        */
         QuarkPair[] pair = q.GetComponentsInChildren<QuarkPair>();
         pair[0].SetColor(QuarkColor.Red);
         pair[1].SetColor(QuarkColor.AntiRed);

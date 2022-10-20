@@ -13,10 +13,10 @@ public class EMField : MonoBehaviour
     [Tooltip("Scale multiplier for charge")] public float cScale = 1.602_176_634f * Mathf.Pow(10, -19);
     [Tooltip("Scale multiplier for velocity cross products (new B = s^2 * B)")] public float vScale = 1;
     [Tooltip("Scale multiplier for force strength (For demonstration)")] public float strength = 1f;
-    [Tooltip("Scale multiplier for Sea Quark Pair force strength")] public float seaStrength = 0;
-    [Tooltip("Skips magnetic field calculation")] public bool fastField = false;
-    [Tooltip("Enables physics based seaquarks")] public bool physQuarks = false;
-    [Tooltip("Enables forcelines for seaquarks")] public bool seaLines = false;
+    //[Tooltip("Scale multiplier for Sea Quark Pair force strength")] public float seaStrength = 0;
+    //[Tooltip("Skips magnetic field calculation")] public bool fastField = false;
+    //[Tooltip("Enables physics based seaquarks")] public bool physQuarks = false;
+    //[Tooltip("Enables forcelines for seaquarks")] public bool seaLines = false;
     [Tooltip("Threshold for how close two seaquarks must be to cancel out")] public float cancelThreshold = 0.0001f;
 
     private List<TypeQuark> destroyNext = new List<TypeQuark>();
@@ -59,8 +59,8 @@ public class EMField : MonoBehaviour
                 if (quarks[i].GetComponent<Rigidbody>()) quarks[i].GetComponent<Rigidbody>().AddForce(force * Time.deltaTime, ForceMode.Force);
                 else if (quarks[i] is QuarkPair)
                 {
-                    quarks[i].transform.position += Vector3.ClampMagnitude(force * Time.deltaTime * seaStrength, 999999);
-                    force *= seaStrength;
+                    //quarks[i].transform.position += Vector3.ClampMagnitude(force * Time.deltaTime * seaStrength, 999999);
+                    //force *= seaStrength;
                 }
                 else { //Force probe
                     quarks[i].GetComponentInChildren<TMP_Text>().text = (force * Time.deltaTime) + "";
