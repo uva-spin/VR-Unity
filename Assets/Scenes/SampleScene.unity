@@ -7145,7 +7145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gluonMovementComponent:
-    boidSpeed: 1
+    gluonSpeed: 1
     perceptionRadius: 0.14
     repelWeight: 0.95
     momentum: 7
@@ -7157,7 +7157,7 @@ MonoBehaviour:
       y: 0
       z: 0
     gluonsNearby: 0
-  gluonsToSpawn: 60000
+  gluonsToSpawn: 40000
   gluonPrefab: {fileID: 2827098300969378373, guid: ca26986b491255841988c0e263726c39, type: 3}
 --- !u!4 &1909472729
 Transform:
