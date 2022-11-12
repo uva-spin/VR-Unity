@@ -16,9 +16,11 @@ public class AllQuarkScript : MonoBehaviour
     ChangeOrbit c2;
     ChangeOrbit c3;
 
-    public int polarizationAxis = 0;
+    public PolarizationAxis polarizationAxis = PolarizationAxis.Z;
 
     public bool forceLineVis = true;
+
+    PartonSpinAdjuster spinAdjuster;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,7 @@ public class AllQuarkScript : MonoBehaviour
         c2 = quark2.GetComponent<ChangeOrbit>();
         c3 = quark3.GetComponent<ChangeOrbit>();
 
+        spinAdjuster = FindObjectOfType<PartonSpinAdjuster>();
     }
 
     // Update is called once per frame
@@ -35,39 +38,45 @@ public class AllQuarkScript : MonoBehaviour
 
     }
     public void TogglePolarization(){
-        if(polarized){
-            c1.SetPolarization(false);
-            c2.SetPolarization(false);
-            c3.SetPolarization(false);
-            polarized = false;
-        }
-        else if(!polarized){
-            c1.SetPolarization(true);
-            c2.SetPolarization(true);
-            c3.SetPolarization(true);
-            polarized = true;
-        }
-        
+        polarized = !polarized;  //Invert the current polarization, then set new value to each Orbit
+        c1.SetPolarization(polarized);
+        c2.SetPolarization(polarized);
+        c3.SetPolarization(polarized);
+        spinAdjuster.SetPolarization(polarized ? polarizationAxis : PolarizationAxis.NONE); //If you are polarized, set the polarization axis of the PSA to the axis, otherwise none
     }
 
-    public void TogglePolX(){
-        c1.polarizationAxis = 0;
-        c2.polarizationAxis = 0;
-        c3.polarizationAxis = 0;
+    public void TogglePolDir(int XYZ){
+        PolarizationAxis direction = getDirection(XYZ);
+        c1.polarizationAxis = direction;
+        c2.polarizationAxis = direction;
+        c3.polarizationAxis = direction;
+        polarizationAxis = direction;
+
+        if (polarized) spinAdjuster.SetPolarization(direction); //Only set PSA axis if polarized, otherwise keep it none
     }
-    public void TogglePolY(){
-        c1.polarizationAxis = 1;
-        c2.polarizationAxis = 1;
-        c3.polarizationAxis = 1;
-    }
-    public void TogglePolZ(){
-        c1.polarizationAxis = 2;
-        c2.polarizationAxis = 2;
-        c3.polarizationAxis = 2;
+
+    PolarizationAxis getDirection(int XYZ) {
+        switch (XYZ) {
+            case 0:
+                return PolarizationAxis.X;
+            case 1:
+                return PolarizationAxis.Y;
+            case 2:
+                return PolarizationAxis.Z;
+            default:
+                return PolarizationAxis.NONE;
+        }
     }
 
     public void Disable()
     {
         forceLineVis = !forceLineVis;
     }
+    public void SpinLines() {
+        FindObjectOfType<PartonSpinAdjuster>().spinVis();
+    }
+}
+
+public enum PolarizationAxis { 
+    X, Y, Z, NONE
 }

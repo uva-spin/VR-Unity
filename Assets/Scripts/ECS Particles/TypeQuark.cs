@@ -20,7 +20,8 @@ public class TypeQuark : MonoBehaviour
     public Material glowMaterial;
 
     protected TrailRenderer trailRenderer;
-    protected LineRenderer forceLine;
+    [SerializeField] protected LineRenderer forceLine;
+    [SerializeField] protected LineRenderer spinLine;
     public float trailWidth = 3.5f;
     public float trailTime = 0.8f;
 
@@ -33,9 +34,14 @@ public class TypeQuark : MonoBehaviour
 
     private void Awake()
     {
+        LineRenderer[] lines = GetComponentsInChildren<LineRenderer>();
         trailRenderer = GetComponent<TrailRenderer>();
-        forceLine = GetComponent<LineRenderer>();
 
+        if (!forceLine)
+        {
+            if (lines.Length > 0) forceLine = lines[1];
+            if (lines.Length > 1) spinLine = lines[0];
+        }
         UpdateColor();
     }
 
@@ -126,4 +132,35 @@ public class TypeQuark : MonoBehaviour
         if (trailRenderer) trailRenderer.material.DOGradientColor(g, "_Color", QuarkSettings.Instance.TrailColorLerp);
         if (forceLine) forceLine.material.DOGradientColor(gInv, "_Color", QuarkSettings.Instance.TrailColorLerp);
     }
+
+    public LineRenderer setVisualLine(VisualLines lineType, Vector3 start, Vector3 end) {
+        LineRenderer lr = getLineType(lineType);
+        if (lr) lr.SetPositions(new Vector3[] { start, end });
+        return lr;
+    }
+
+    public LineRenderer setVisualLine(VisualLines lineType, Vector3 direction) {
+        LineRenderer lr = getLineType(lineType);
+        if (lr) lr.SetPositions(new Vector3[] { transform.position, transform.position + direction });
+        return lr;
+    }
+
+    public LineRenderer getLineType(VisualLines lineType) {
+        switch (lineType)
+        {
+            case VisualLines.FORCELINE:
+                return forceLine;
+            case VisualLines.SPINLINE:
+                return spinLine;
+            default:
+                return null;
+        }
+    }
+}
+/** 
+ * Type of line
+ * Used to distinguish different visual lines
+ * **/
+public enum VisualLines { 
+    FORCELINE, SPINLINE
 }

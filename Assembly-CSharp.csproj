@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3AE47BCB-3B05-7E72-4CF8-8FE9CC38C310}</ProjectGuid>
+    <ProjectGuid>{C666973B-0140-BDE0-23D1-B7754A6F399D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSpawner.cs" />
+    <Compile Include="Assets\StaticField.cs" />
     <Compile Include="Assets\Scripts\FPSCounter.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\PathSpace.cs" />
     <Compile Include="Assets\Scripts\PartonSpinAdjuster.cs" />
@@ -74,10 +75,12 @@
     <Compile Include="Assets\Scripts\ChangeOrbit.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\Unused\SpawnerComponent.cs" />
     <Compile Include="Assets\Scripts\ShellVis.cs" />
+    <Compile Include="Assets\Scripts\ECS Particles\PointCharge.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Utility\MathUtility.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Utility\CubicBezierUtility.cs" />
     <Compile Include="Assets\Scripts\ParticleCenterScript.cs" />
     <Compile Include="Assets\Scripts\Probe\ForceProbe.cs" />
+    <Compile Include="Assets\InitialVel.cs" />
     <Compile Include="Assets\Scripts\Quark.cs" />
     <Compile Include="Assets\Scripts\EMField.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\GeneratePathExample.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="Assets\Scripts\ECS Particles\SeaQuark.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\RoadMeshCreator.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
+    <Compile Include="Assets\LockOn.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -932,7 +936,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{8A19528A-5660-2FC3-2D4A-2B2461CEC6EB}</Project>
+      <Project>{25F4DB58-D0E8-A442-5AF6-093A845FC914}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>

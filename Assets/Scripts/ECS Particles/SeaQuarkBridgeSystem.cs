@@ -16,6 +16,8 @@ public partial class SeaQuarkBridgeSystem : SystemBase {
         var deltaTime = Time.DeltaTime;
 
         GameObject spawner = GameObject.Find("SeaQuarkSpawner");
+        if (spawner == null)
+            return;
         SeaQuarkSpawner spawnerScript = spawner.GetComponent<SeaQuarkSpawner>();
         
         EntityQuery particleQuery = GetEntityQuery(ComponentType.ReadOnly<MovementComponent>(), ComponentType.ReadOnly<Translation>());

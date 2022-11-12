@@ -62,15 +62,18 @@ public class EMField : MonoBehaviour
                     //quarks[i].transform.position += Vector3.ClampMagnitude(force * Time.deltaTime * seaStrength, 999999);
                     //force *= seaStrength;
                 }
-                else { //Force probe
+                else if (quarks[i].GetComponentInChildren<TMP_Text>()) { //Force probe
                     quarks[i].GetComponentInChildren<TMP_Text>().text = (force * Time.deltaTime) + "";
                 }
 
-                if (quarks[i].GetComponent<LineRenderer>())
+                LineRenderer lr = quarks[i].getLineType(VisualLines.FORCELINE);
+
+                if (lr)
                 {
-                    Vector3[] linePos = { quarks[i].transform.position, Vector3.Lerp(quarks[i].GetComponent<LineRenderer>().GetPosition(1), quarks[i].transform.position + Vector3.ClampMagnitude(force / 50000f + force.normalized / 1.5f, 5f), Time.deltaTime * 20) };
-                    quarks[i].GetComponent<LineRenderer>().SetPositions(linePos);
+                    Vector3[] linePos = { quarks[i].transform.position, Vector3.Lerp(lr.GetPosition(1), quarks[i].transform.position + Vector3.ClampMagnitude(force / 50000f + force.normalized / 1.5f, 5f), Time.deltaTime * 20) };
+                    quarks[i].setVisualLine(VisualLines.FORCELINE, linePos[0], linePos[1]);
                 }
+
             }
         }
 
@@ -92,7 +95,19 @@ public class EMField : MonoBehaviour
     //
     //Handles calculations for forces
     Vector3 CalculateElecF(TypeQuark quark, TypeQuark quark2) { //F = -(k * q1q2/r^2) * r hat
-        Vector3 dir = quark2.transform.position - quark.transform.position;
+        if (quark2 is StaticField)
+        {
+            if ((quark2 as StaticField).type && ((quark2 as StaticField).scope || quark2.GetComponent<Collider>().bounds.Intersects(quark.GetComponent<Collider>().bounds)))
+                return ((quark2 as StaticField).Value * quark2.transform.up);
+            return Vector3.zero;
+        }
+        if (quark is StaticField)
+        {
+            if ((quark as StaticField).type && ((quark as StaticField).scope || quark.GetComponent<Collider>().bounds.Intersects(quark2.GetComponent<Collider>().bounds)))
+                return ((quark as StaticField).Value * quark.transform.up);
+            return Vector3.zero;
+        }
+        Vector3 dir = (quark2 is StaticField) ? quark2.transform.up : quark2.transform.position - quark.transform.position;
 
         if (dir.magnitude <= cancelThreshold) { //Divide by 0 protection & sea/antisea quark annihilation checker
             if (quark is QuarkPair && quark2 is QuarkPair) {
@@ -107,7 +122,18 @@ public class EMField : MonoBehaviour
         return dir.normalized / Mathf.Pow(dir.magnitude, 2);
     }
     Vector3 CalculateMagF(TypeQuark quark, TypeQuark quark2) { //F = (u0/4pi) * (q1q2/r^2)v1 x (v2 x r hat)
+        if (quark2 is StaticField)
+        {
+            if (!(quark2 as StaticField).type && ((quark2 as StaticField).scope || quark2.GetComponent<Collider>().bounds.Intersects(quark.GetComponent<Collider>().bounds)))
+                return ((quark2 as StaticField).Value * quark2.transform.up);
+        }
+        if (quark is StaticField)
+        {
+            if (!(quark as StaticField).type && ((quark as StaticField).scope || quark.GetComponent<Collider>().bounds.Intersects(quark2.GetComponent<Collider>().bounds)))
+                return ((quark as StaticField).Value * quark.transform.up);
+        }
         Vector3 dir = quark2.transform.position - quark.transform.position;
+
         Vector3 vel2 = quark2.GetComponent<Rigidbody>() ? quark2.GetComponent<Rigidbody>().velocity : ((quark2 is QuarkPair) ? ((QuarkPair)quark2).getVelocity() : Vector3.zero);
 
         if (dir.magnitude <= cancelThreshold) {
