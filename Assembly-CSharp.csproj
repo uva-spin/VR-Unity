@@ -102,6 +102,7 @@
     <Compile Include="Assets\Scripts\ECS Particles\Unused\MovementAuthoring.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\GluonSpawner.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\MovementSystem.cs" />
+    <Compile Include="Assets\LockOn.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSceneTool.cs" />
     <Compile Include="Assets\Scripts\AllQuarkScript.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathFollower.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Assets\Scripts\ECS Particles\SeaQuark.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\RoadMeshCreator.cs" />
     <Compile Include="Assets\Scripts\MenuScript.cs" />
-    <Compile Include="Assets\LockOn.cs" />
+    <Compile Include="Assets\FluxTension.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

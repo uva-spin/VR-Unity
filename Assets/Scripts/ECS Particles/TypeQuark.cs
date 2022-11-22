@@ -4,8 +4,8 @@ using System;
 
 public class TypeQuark : MonoBehaviour
 {
-    [Tooltip("Is this particle charged?")] public bool isCharged = false;
-    [Tooltip("Does this particle have a +2/3 charge (true), or -1/3 (false)?")] public bool charge = false;
+    [Tooltip("Is this particle positive (true) or negative (false)")] public bool isPositive = false;
+    [Tooltip("What type of charged particle is this?")] public Charges chargeType = Charges.UNCHARGED;
 
     /// <summary>
     /// Color of sphere around quark.
@@ -156,6 +156,22 @@ public class TypeQuark : MonoBehaviour
                 return null;
         }
     }
+
+    //Returns float value for charge types
+    public float getCharge()
+    {
+        switch (chargeType)
+        {
+            case Charges.UNCHARGED:
+                return 0;
+            case Charges.DOWN:
+                return 1 / 3f;
+            case Charges.UP:
+                return 2 / 3f;
+            default:
+                return 1;
+        }
+    }
 }
 /** 
  * Type of line
@@ -163,4 +179,17 @@ public class TypeQuark : MonoBehaviour
  * **/
 public enum VisualLines { 
     FORCELINE, SPINLINE
+}
+
+
+/** 
+ * Uncharged    = 0 charge
+ * Down         = 1/3 charge
+ * Up           = 2/3 charge
+ * Full         = 1 charge
+ * Probe        = 1 charge, no EM influence
+ * Field        = 1 charge, not EM influenced
+**/
+public enum Charges { 
+    UNCHARGED, DOWN, UP, FULL, PROBE, FIELD
 }

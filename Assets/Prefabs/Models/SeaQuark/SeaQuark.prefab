@@ -4909,8 +4909,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed2439ec6edf4f441b25040894c3982d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCharged: 1
-  charge: 0
+  isPositive: 0
+  chargeType: 2
   quarkColor: 0
   sphereMaterial: {fileID: 0}
   coreMaterial: {fileID: 0}
@@ -9856,8 +9856,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed2439ec6edf4f441b25040894c3982d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCharged: 1
-  charge: 1
+  isPositive: 1
+  chargeType: 2
   quarkColor: 0
   sphereMaterial: {fileID: 0}
   coreMaterial: {fileID: 0}

@@ -30,18 +30,21 @@ public class EMField : MonoBehaviour
         for (int i = 0; i < quarks.Length; i++) //Iterates through each quark
         {
             Vector3 vel1 = quarks[i].GetComponent<Rigidbody>() ? quarks[i].GetComponent<Rigidbody>().velocity : ((quarks[i] is QuarkPair) ? ((QuarkPair)quarks[i]).getVelocity() : Vector3.zero);
-            float charge1 = (quarks[i].charge) ? (2f / 3) : (-1f / 3);
+            float charge1 = quarks[i].getCharge() * ((quarks[i].isPositive) ? 1 : -1 );
+
+            Charges cT1 = quarks[i].chargeType;
 
             for (int j = i + 1; j < quarks.Length; j++) //Iterates through all quarks after target quark
             {
-                float charge2 = (quarks[j].charge) ? (2f / 3) : (-1f / 3);
+                float charge2 = quarks[j].getCharge() * ((quarks[j].isPositive) ? 1 : -1);
+                Charges cT2 = quarks[j].chargeType;
 
                 Vector3 eForce = CalculateElecF(quarks[i], quarks[j]); //Newton's Third Law:
-                if (quarks[j].isCharged) elecForces[i] += eForce * charge2; //Every action...
-                if (quarks[i].isCharged) elecForces[j] -= eForce * charge1; //...has an opposite yet equal reaction
+                if (cT2 != Charges.PROBE) elecForces[i] += eForce * charge2; //Every action...
+                if (cT1 != Charges.PROBE) elecForces[j] -= eForce * charge1; //...has an opposite yet equal reaction
                 Vector3 mForce = CalculateMagF(quarks[i], quarks[j]);
-                if (quarks[j].isCharged) magForces[i] += mForce * charge2;
-                if (quarks[i].isCharged) magForces[j] -= mForce * charge1;
+                if (cT2 != Charges.PROBE) magForces[i] += mForce * charge2;
+                if (cT1 != Charges.PROBE) magForces[j] -= mForce * charge1;
             }
 
             //Multiply by the charge and constants afterwords instead of in the calculation
@@ -53,7 +56,7 @@ public class EMField : MonoBehaviour
 
             //Prints EM forces to console
             //Debug.Log(quarks[i].gameObject.name + "has net EM force: " + (elecForces[i] + magForces[i]) + " with an electric force of: " + elecForces[i] + " and magnetic force of: " + magForces[i]);
-            if (true || quarks[i].isCharged)
+            if (true /*|| quarks[i].isCharged*/)
             {
                 Vector3 force = (elecForces[i] + magForces[i]) * strength;
                 if (quarks[i].GetComponent<Rigidbody>()) quarks[i].GetComponent<Rigidbody>().AddForce(force * Time.deltaTime, ForceMode.Force);
@@ -111,7 +114,7 @@ public class EMField : MonoBehaviour
 
         if (dir.magnitude <= cancelThreshold) { //Divide by 0 protection & sea/antisea quark annihilation checker
             if (quark is QuarkPair && quark2 is QuarkPair) {
-                if (quark.charge != quark2.charge) { //Are they opposite?
+                if (quark.isPositive != quark2.isPositive) { //Are they opposite?
                     destroyNext.Add(quark);
                     destroyNext.Add(quark2);
                 }
@@ -138,7 +141,7 @@ public class EMField : MonoBehaviour
 
         if (dir.magnitude <= cancelThreshold) {
             if (quark is QuarkPair && quark2 is QuarkPair) { //Divide by 0 protection & sea/antisea quark annihilation checker
-                if (quark.charge != quark2.charge) { //Are they opposite?
+                if (quark.isPositive != quark2.isPositive) { //Are they opposite?
                     destroyNext.Add(quark);
                     destroyNext.Add(quark2);
                 }

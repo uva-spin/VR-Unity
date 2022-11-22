@@ -95,12 +95,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f51c2242944b29468ecc7559a663e15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCharged: 0
-  charge: 0
+  isPositive: 0
+  chargeType: 5
   quarkColor: 0
   sphereMaterial: {fileID: 0}
   coreMaterial: {fileID: 0}
   glowMaterial: {fileID: 0}
+  forceLine: {fileID: 0}
+  spinLine: {fileID: 0}
   trailWidth: 3.5
   trailTime: 0.8
   partSys1: {fileID: 0}

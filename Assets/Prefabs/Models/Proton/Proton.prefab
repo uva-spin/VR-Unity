@@ -84,8 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d691a8a83bcf24bb74713f5f14a7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCharged: 1
-  charge: 0
+  isPositive: 0
+  chargeType: 1
   quarkColor: 1
   sphereMaterial: {fileID: 0}
   coreMaterial: {fileID: 0}
@@ -713,8 +713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d691a8a83bcf24bb74713f5f14a7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCharged: 1
-  charge: 1
+  isPositive: 1
+  chargeType: 2
   quarkColor: 0
   sphereMaterial: {fileID: 0}
   coreMaterial: {fileID: 0}
@@ -1504,8 +1504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d691a8a83bcf24bb74713f5f14a7c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCharged: 1
-  charge: 1
+  isPositive: 1
+  chargeType: 2
   quarkColor: 2
   sphereMaterial: {fileID: 0}
   coreMaterial: {fileID: 0}
@@ -1827,6 +1827,7 @@ GameObject:
   - component: {fileID: 264284010269365239}
   - component: {fileID: 264284010269365234}
   - component: {fileID: 6286276693454516955}
+  - component: {fileID: 4658782103055338294}
   m_Layer: 0
   m_Name: Proton
   m_TagString: Untagged
@@ -1894,6 +1895,20 @@ MonoBehaviour:
   vScale: 1
   strength: 1
   cancelThreshold: 0.0001
+--- !u!114 &4658782103055338294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264284010269365235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064c76acb20ef95468574513385756dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fluxTube: {fileID: 264284009955498132}
+  kConstant: 1
 --- !u!1 &264284010422341506
 GameObject:
   m_ObjectHideFlags: 0
