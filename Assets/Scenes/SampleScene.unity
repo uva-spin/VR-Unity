@@ -1453,7 +1453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93ba4e1f8c839348adb941388d73dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: {x: 10, y: 0, z: 0}
+  force: {x: 0, y: 1, z: 0}
 --- !u!198 &415316939 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5663761653767242486, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
@@ -1697,7 +1697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93ba4e1f8c839348adb941388d73dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: {x: -5, y: 5, z: 0}
+  force: {x: 1, y: -1, z: 0}
 --- !u!1 &472140677 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 850262250608000763, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
@@ -3498,7 +3498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interest: {fileID: 420430033}
-  speed: 20
+  speed: 100
 --- !u!1 &818670344
 GameObject:
   m_ObjectHideFlags: 0
@@ -4953,7 +4953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93ba4e1f8c839348adb941388d73dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: {x: 0, y: -10, z: 0}
+  force: {x: -1, y: 0, z: 0}
 --- !u!198 &1036746653 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 2009051508668605832, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
@@ -8525,7 +8525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6286276693454516955, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
       propertyPath: vScale
-      value: 10000000
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 6286276693454516955, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
       propertyPath: seaLines
@@ -8646,6 +8646,14 @@ PrefabInstance:
     - target: {fileID: 8125098694876102903, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8871818237558183125, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
+      propertyPath: factor
+      value: 0.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 8871818237558183125, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
+      propertyPath: strength
+      value: 10000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
@@ -9398,7 +9406,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1344843524751223408, guid: 42dcf3cefd679484eb3a0d686336e4ff, type: 3}
       propertyPath: Value
-      value: 100
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1344843524751223408, guid: 42dcf3cefd679484eb3a0d686336e4ff, type: 3}
       propertyPath: scope

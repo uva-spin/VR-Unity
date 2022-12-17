@@ -1828,6 +1828,7 @@ GameObject:
   - component: {fileID: 264284010269365234}
   - component: {fileID: 6286276693454516955}
   - component: {fileID: 4658782103055338294}
+  - component: {fileID: 8871818237558183125}
   m_Layer: 0
   m_Name: Proton
   m_TagString: Untagged
@@ -1907,8 +1908,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 064c76acb20ef95468574513385756dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fluxTube: {fileID: 264284009955498132}
-  kConstant: 1
+  A: 1
+  B: 1
+  C: 1
+--- !u!114 &8871818237558183125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264284010269365235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6687ceb78a44b74bb7fe5eacd5d7860, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &264284010422341506
 GameObject:
   m_ObjectHideFlags: 0
