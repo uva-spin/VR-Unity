@@ -5,16 +5,15 @@ using UnityEngine;
 public class TempBound : MonoBehaviour
 {
     [SerializeField]public float strength = 10;
-    [SerializeField][Tooltip("Do not have this larger that 1")]public float factor = 0.9f;
+    public float logBase = 1.4f;
+    GameObject fluxCenter;
+    private void Start()
+    {
+        fluxCenter = GameObject.FindGameObjectWithTag("FluxCenter");
+    }
     private void Update()
     {
-        foreach (TypeQuark q in FindObjectsOfType<TypeQuark>()) {
-            if (q.GetComponent<Rigidbody>()) {
-                Vector3 direction = -(q.transform.position - transform.position);
-                q.GetComponent<Rigidbody>().AddForce(Mathf.Log(direction.magnitude, 1.4f) * direction.normalized * strength * Time.deltaTime);
-
-
-            }
-        }
+        Vector3 direction = -(fluxCenter.transform.position - transform.position);
+        fluxCenter.GetComponent<Rigidbody>().AddForce(Mathf.Log(direction.magnitude, logBase) * direction.normalized * strength * Time.deltaTime);
     }
 }

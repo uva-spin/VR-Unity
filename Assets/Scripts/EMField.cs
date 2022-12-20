@@ -18,6 +18,7 @@ public class EMField : MonoBehaviour
     //[Tooltip("Enables physics based seaquarks")] public bool physQuarks = false;
     //[Tooltip("Enables forcelines for seaquarks")] public bool seaLines = false;
     [Tooltip("Threshold for how close two seaquarks must be to cancel out")] public float cancelThreshold = 0.0001f;
+    [Tooltip("Threshold for maximum force a quark can experience")] public float forceThreshold = 1000f;
 
     private List<TypeQuark> destroyNext = new List<TypeQuark>();
 
@@ -59,6 +60,9 @@ public class EMField : MonoBehaviour
             if (true /*|| quarks[i].isCharged*/)
             {
                 Vector3 force = (elecForces[i] + magForces[i]) * strength;
+
+                if (force.magnitude > forceThreshold) force = force.normalized * forceThreshold;
+
                 if (quarks[i].GetComponent<Rigidbody>()) quarks[i].GetComponent<Rigidbody>().AddForce(force * Time.deltaTime, ForceMode.Force);
                 else if (quarks[i] is QuarkPair)
                 {
