@@ -21,6 +21,9 @@ public class SeaQuark : MonoBehaviour {
     private float3 calculateValenceQuarkForce(GameObject quark) {
         // valenceQuarkDown.transform.position - transform.position
         // return vectorToQuark / math.max(0.1f, math.lengthsq(vectorToQuark));
+        if (quark == null)
+            return 0;
+
         float3 vectorToQuark = (float3) (quark.transform.position - this.transform.position);
         float3 f = vectorToQuark / math.max(0.1f, math.lengthsq(vectorToQuark));
 
@@ -59,14 +62,14 @@ public class SeaQuark : MonoBehaviour {
 
     public void Update() {
         QuarkPair[] qs = GetComponentsInChildren<QuarkPair>();
-        Vector3 center = (qs[1].transform.position + qs[0].transform.position) / 2;
+        //Vector3 center = (qs[1].transform.position + qs[0].transform.position) / 2;
 
-        GetComponentInChildren<SkinnedMeshRenderer>().transform.parent.position = center;
+        //GetComponentInChildren<SkinnedMeshRenderer>().transform.parent.position = center;
 
-        qs[1].transform.position = center + ((qs[1].transform.position - center).normalized / 5);
-        qs[0].transform.position = center + ((qs[0].transform.position - center).normalized / 5);
+        //qs[1].transform.position = center + ((qs[1].transform.position - center).normalized * (transform.localScale.z / 2f));
+        //qs[0].transform.position = center + ((qs[0].transform.position - center).normalized * (transform.localScale.z / 2f));
 
-        GetComponentInChildren<SkinnedMeshRenderer>().transform.parent.LookAt(qs[1].transform.position, GetComponentInChildren<SkinnedMeshRenderer>().transform.up);
+        //GetComponentInChildren<SkinnedMeshRenderer>().transform.parent.LookAt(qs[1].transform.position, GetComponentInChildren<SkinnedMeshRenderer>().transform.up);
 
         float3 valenceQuarkForce = calculateValenceQuarkForce(valenceQuarkDown) +
             calculateValenceQuarkForce(valenceQuarkUpRed) +

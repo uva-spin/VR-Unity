@@ -49,7 +49,6 @@ public class Quark : TypeQuark
         coreMaterial = quarkCore.GetComponent<Renderer>().material;
         glowMaterial = quarkGlow.GetComponent<Renderer>().material;
         trailRenderer = GetComponent<TrailRenderer>();
-        forceLine = GetComponent<LineRenderer>();
 
         changeOrbit = GetComponent<ChangeOrbit>();
 

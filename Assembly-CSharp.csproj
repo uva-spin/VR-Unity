@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{3AE47BCB-3B05-7E72-4CF8-8FE9CC38C310}</ProjectGuid>
+    <ProjectGuid>{44ECC378-BDD2-5C06-C445-CF9C42792977}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSpawner.cs" />
+    <Compile Include="Assets\StaticField.cs" />
     <Compile Include="Assets\Scripts\FPSCounter.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\PathSpace.cs" />
     <Compile Include="Assets\Scripts\PartonSpinAdjuster.cs" />
@@ -74,10 +75,12 @@
     <Compile Include="Assets\Scripts\ChangeOrbit.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\Unused\SpawnerComponent.cs" />
     <Compile Include="Assets\Scripts\ShellVis.cs" />
+    <Compile Include="Assets\Scripts\ECS Particles\PointCharge.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Utility\MathUtility.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Utility\CubicBezierUtility.cs" />
     <Compile Include="Assets\Scripts\ParticleCenterScript.cs" />
     <Compile Include="Assets\Scripts\Probe\ForceProbe.cs" />
+    <Compile Include="Assets\InitialVel.cs" />
     <Compile Include="Assets\Scripts\Quark.cs" />
     <Compile Include="Assets\Scripts\EMField.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\GeneratePathExample.cs" />
@@ -98,11 +101,14 @@
     <Compile Include="Assets\Scripts\Gluon.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\Unused\MovementAuthoring.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\GluonSpawner.cs" />
+    <Compile Include="Assets\FluxTension.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\MovementSystem.cs" />
+    <Compile Include="Assets\LockOn.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSceneTool.cs" />
     <Compile Include="Assets\Scripts\AllQuarkScript.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathFollower.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\GlobalDisplaySettings.cs" />
+    <Compile Include="Assets\TempBound.cs" />
     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\VertexPath.cs" />
     <Compile Include="Assets\Scripts\GluonMovement.cs" />
     <Compile Include="Assets\Scripts\ECS Particles\Unused\SpawnerAuthoring.cs" />
@@ -932,7 +938,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{8A19528A-5660-2FC3-2D4A-2B2461CEC6EB}</Project>
+      <Project>{8BBB159A-6658-620C-ECD2-63C327001F24}</Project>
       <Name>Assembly-CSharp-firstpass</Name>
     </ProjectReference>
   </ItemGroup>
