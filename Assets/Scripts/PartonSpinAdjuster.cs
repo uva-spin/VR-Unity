@@ -12,13 +12,9 @@ public class PartonSpinAdjuster : MonoBehaviour
 
     [Tooltip("Threshold for total parton spin error allowed (Larger values are less realistic but usually slower to calculate)")] public float Threshold = 0.1f;
     [Tooltip("Scale multiplier for momentum contribution to total parton spin")] public float Scale = 1;
-<<<<<<< HEAD
     [Tooltip("Randomizes quark order when iterating to make spin appear random")] bool pseudoRandomSpin = true;
 
     [Tooltip("Use the old parton spin sum rule?")] bool oldSystem = false;
-=======
-    [Tooltip("Randomizes quark order when iterating to make spin appear random")] public bool pseudoRandomSpin = true;
->>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
 
     float mostSpin = 0;
 
@@ -32,7 +28,6 @@ public class PartonSpinAdjuster : MonoBehaviour
     [Tooltip("Magnetic Field used for polarization")] [SerializeField] StaticField polarizationField;
     float value = 2000;
 
-<<<<<<< HEAD
     List<GameObject> pairs = new List<GameObject>();
     List<Vector3> values = new List<Vector3>();
 
@@ -44,47 +39,6 @@ public class PartonSpinAdjuster : MonoBehaviour
         if (polarizationField) value = polarizationField.Value;
 
         addPair(FindObjectOfType<AllQuarkScript>().gameObject, Vector3.forward * 0.5f);
-=======
-    private void Start()
-    {
-        position = transform.position;
-        if (polarizationField) value = polarizationField.Value;
-    }
-
-    public void spinVis() {
-        spinLinesVis = !spinLinesVis;
-    }
-
-    public void SetPolarization(PolarizationAxis direction) {
-        switch (direction)
-        {
-            case PolarizationAxis.X:
-                spinDir = Vector3.right * 0.5f;
-                break;
-            case PolarizationAxis.Y:
-                spinDir = Vector3.up * 0.5f;
-                break;
-            case PolarizationAxis.Z:
-                spinDir = Vector3.forward * 0.5f;
-                break;
-            case PolarizationAxis.NONE:
-                spinDir = Vector3.zero;
-                break;
-            default:
-                break;
-        }
-
-        if (polarizationField) {
-            if (spinDir.magnitude > 0)
-            {
-                polarizationField.Value = value;
-                //polarizationField.transform.LookAt(transform.position + spinDir);
-                polarizationField.transform.up = spinDir;
-            }
-            else
-                polarizationField.Value = 0;
-        }
->>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
     }
 
     public void addPair(GameObject obj, Vector3 value) {

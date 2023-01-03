@@ -1314,11 +1314,6 @@ RectTransform:
   m_AnchoredPosition: {x: -7.000013, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!4 &311115035 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 297331675380842364, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
-  m_PrefabInstance: {fileID: 1908597805}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &322037597
 GameObject:
   m_ObjectHideFlags: 0
@@ -5252,7 +5247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1140408396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7047,18 +7042,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Threshold: 0.1
-<<<<<<< HEAD
   Scale: 0.001
   polarizationField: {fileID: 209670142}
   aligners:
   - {fileID: 1877326014}
   - {fileID: 666457202}
   - {fileID: 2042592941}
-=======
-  Scale: 0.0001
-  pseudoRandomSpin: 1
-  polarizationField: {fileID: 209670142}
->>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
 --- !u!1 &1758894654
 GameObject:
   m_ObjectHideFlags: 0
@@ -8573,20 +8562,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4658782103055338294, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
       propertyPath: threshold
-<<<<<<< HEAD
       value: 100000
-=======
-      value: 10000
->>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
       objectReference: {fileID: 0}
     - target: {fileID: 4658782103055338294, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
       propertyPath: fluxCenter
       value: 
-<<<<<<< HEAD
       objectReference: {fileID: 162994102}
-=======
-      objectReference: {fileID: 311115035}
->>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
     - target: {fileID: 5040877580958502877, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
