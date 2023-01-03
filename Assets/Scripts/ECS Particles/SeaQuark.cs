@@ -66,8 +66,13 @@ public class SeaQuark : MonoBehaviour {
 
         //GetComponentInChildren<SkinnedMeshRenderer>().transform.parent.position = center;
 
+<<<<<<< HEAD
         //qs[1].transform.position = center + ((qs[1].transform.position - center).normalized * (transform.localScale.z / 2f));
         //qs[0].transform.position = center + ((qs[0].transform.position - center).normalized * (transform.localScale.z / 2f));
+=======
+        qs[1].transform.position = center + ((qs[1].transform.position - center).normalized * (transform.localScale.z / 2f));
+        qs[0].transform.position = center + ((qs[0].transform.position - center).normalized * (transform.localScale.z / 2f));
+>>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
 
         //GetComponentInChildren<SkinnedMeshRenderer>().transform.parent.LookAt(qs[1].transform.position, GetComponentInChildren<SkinnedMeshRenderer>().transform.up);
 

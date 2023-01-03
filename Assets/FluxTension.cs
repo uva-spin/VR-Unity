@@ -10,7 +10,11 @@ public class FluxTension : MonoBehaviour
     public float C = 1;
     public float threshold = 1000;
 
+<<<<<<< HEAD
     public GameObject fluxCenter;
+=======
+    GameObject fluxCenter;
+>>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
 
     public float scale = 0.1f;
 
@@ -18,6 +22,10 @@ public class FluxTension : MonoBehaviour
     void Start()
     {
         quarks = gameObject.GetComponentsInChildren<TypeQuark>();
+<<<<<<< HEAD
+=======
+        fluxCenter = GameObject.FindGameObjectWithTag("FluxCenter");
+>>>>>>> f1ffde9f13d571f47d36e720280d6dcc50271ec8
     }
 
     // Update is called once per frame
