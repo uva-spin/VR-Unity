@@ -68,7 +68,7 @@ public class ChangeOrbit : MonoBehaviour
 
     public float rad;
     public Vector3 tempRotVector;
-    public PolarizationAxis polarizationAxis = PolarizationAxis.Z;
+    public int polarizationAxis = 2;
 
     /// <summary>
     /// Enable or disable small orbits mode for this quark.
@@ -150,24 +150,19 @@ public class ChangeOrbit : MonoBehaviour
         
         
         if(isPolarized){
-            switch (polarizationAxis)
-            {
-                case PolarizationAxis.X:
-                    tempRotVector = new Vector3(1.0f, 0.0f, 0.0f);
-                    transform.position = new Vector3(0.0f, transform.position.y, transform.position.z);
-                    break;
-                case PolarizationAxis.Y:
-                    tempRotVector = new Vector3(0.0f, 1.0f, 0.0f);
-                    transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
-                    break;
-                case PolarizationAxis.Z:
-                    tempRotVector = new Vector3(0.0f, 0.0f, 1.0f);
-                    transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
-                    break;
-                case PolarizationAxis.NONE:
-                    break;
-                default:
-                    break;
+            if(polarizationAxis == 0){
+                tempRotVector = new Vector3(1.0f, 0.0f, 0.0f);
+                transform.position = new Vector3(0.0f, transform.position.y, transform.position.z);
+            }
+            else if(polarizationAxis == 1){
+                tempRotVector = new Vector3(0.0f, 1.0f, 0.0f);
+                transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+
+            }
+            else if(polarizationAxis == 2){
+                tempRotVector = new Vector3(0.0f, 0.0f, 1.0f);
+                transform.position = new Vector3(transform.position.x , transform.position.y, 0.0f);
+
             }
         }
         else if(!isPolarized && counter < axisChangeTime)
@@ -198,21 +193,16 @@ public class ChangeOrbit : MonoBehaviour
         transform.position = newPosition;
 
         if(isPolarized){
-            switch (polarizationAxis)
-            {
-                case PolarizationAxis.X:
-                    transform.position = new Vector3(0.0f, transform.position.y, transform.position.z);
-                    break;
-                case PolarizationAxis.Y:
-                    transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
-                    break;
-                case PolarizationAxis.Z:
-                    transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
-                    break;
-                case PolarizationAxis.NONE:
-                    break;
-                default:
-                    break;
+            if(polarizationAxis == 0){
+                transform.position = new Vector3(0.0f, transform.position.y, transform.position.z);
+            }
+            else if(polarizationAxis == 1){
+                transform.position = new Vector3(transform.position.x, 0.0f, transform.position.z);
+
+            }
+            else if(polarizationAxis == 2){
+                transform.position = new Vector3(transform.position.x , transform.position.y, 0.0f);
+
             }
         }
     }
