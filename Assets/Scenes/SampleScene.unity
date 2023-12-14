@@ -569,6 +569,29 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &178618935 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 264284010269365235, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
+  m_PrefabInstance: {fileID: 1908597805}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &178618936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178618935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b843c7b9a2f5638408fbba7f15e978a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6972975766535982195, guid: 044b3c84e7c40644bb110fadc3c7abeb, type: 3}
+  virtuality: 0.01
+  x: 0
+  spawnIntervalSeconds: 0
+  cageRadius: 0
+  Energy: 30
 --- !u!4 &190211204 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 264284009461599840, guid: f71a522907c1643a49dd8ce95c95e092, type: 3}
@@ -4628,14 +4651,14 @@ MonoBehaviour:
   Mc: 0.00001
   k: 20.91
   x:
-  - {x: 0.5, y: 0, z: 0}
-  - {x: -0.25, y: 0.4330127, z: 0}
-  - {x: -0.25, y: -0.4330127, z: 0}
+  - {x: 5, y: 0, z: 0}
+  - {x: -2.5, y: 4.330127, z: 0}
+  - {x: -2.5, y: -4.330127, z: 0}
   - {x: 0, y: 0, z: 0}
   x_dot:
-  - {x: 2, y: -2, z: 0}
-  - {x: 0, y: 4, z: -4}
-  - {x: -4, y: 0, z: 4}
+  - {x: 5, y: -5, z: 0}
+  - {x: 0, y: 10, z: -10}
+  - {x: -10, y: 0, z: 10}
   - {x: 0, y: 0, z: 0}
   x_dot_dot:
   - {x: 0, y: 0, z: 0}
@@ -4651,12 +4674,15 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   A:
-  - {x: 100, y: 100, z: 100}
-  - {x: 100, y: 100, z: 100}
-  - {x: 100, y: 100, z: 100}
+  - {x: 0.5, y: 0, z: -0.5}
+  - {x: -1, y: 1, z: 0}
+  - {x: 0, y: -1, z: 1}
+  - {x: 0, y: 0, z: 0}
+  chaosFactor: 4.5
+  chaosShiftChance: 0.2
   Ra: 5
   dt: 0.001
-  playbackSpeed: 1
+  playbackSpeed: 5
   displays:
   - {fileID: 445006287}
   - {fileID: 1036100726}
