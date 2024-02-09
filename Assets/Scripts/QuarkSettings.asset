@@ -12,18 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab34ed1acf5144a9b82da65b23d19b1, type: 3}
   m_Name: QuarkSettings
   m_EditorClassIdentifier: 
-  QuarkRed: {r: 0, g: 0, b: 0, a: 0}
-  GluonRed: {r: 0, g: 0, b: 0, a: 0}
-  AntiRed: {r: 0, g: 0, b: 0, a: 0}
-  QuarkGreen: {r: 0, g: 0, b: 0, a: 0}
-  GluonGreen: {r: 0, g: 0, b: 0, a: 0}
-  AntiGreen: {r: 0, g: 0, b: 0, a: 0}
-  QuarkBlue: {r: 0, g: 0, b: 0, a: 0}
-  GluonBlue: {r: 0, g: 0, b: 0, a: 0}
-  AntiBlue: {r: 0, g: 0, b: 0, a: 0}
+  QuarkRed: {r: 1, g: 0, b: 0, a: 0}
+  GluonRed: {r: 1, g: 0, b: 0, a: 0}
+  AntiRed: {r: 0, g: 1, b: 0.97256804, a: 0}
+  QuarkGreen: {r: 0.023620605, g: 1, b: 0, a: 0}
+  GluonGreen: {r: 0.023153365, g: 1, b: 0, a: 1}
+  AntiGreen: {r: 1, g: 0, b: 0.9053154, a: 0}
+  QuarkBlue: {r: 0.0044999123, g: 0, b: 1, a: 0}
+  GluonBlue: {r: 0.004391442, g: 0, b: 1, a: 1}
+  AntiBlue: {r: 0.997118, g: 1, b: 0, a: 0}
   GluonSpeed: 400
   GluonFlashTime: 0.2
   QuarkSpeed: 10
   QuarkMoveRadius: 1000
   GlobalSpeedMultiplier: 1
   GlobalSlowdownCoefficient: 0.2
+  TrailColorLerp: 0.2

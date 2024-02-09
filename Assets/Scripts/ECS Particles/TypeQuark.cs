@@ -80,6 +80,25 @@ public class TypeQuark : MonoBehaviour
         return quarkColor;
     }
 
+    public static QuarkColor GetAntiColor(QuarkColor color) {
+        switch (color) {
+            case QuarkColor.Red: case QuarkColor.GluonRed:
+                return QuarkColor.AntiRed;
+            case QuarkColor.Green: case QuarkColor.GluonGreen:
+                return QuarkColor.AntiGreen;
+            case QuarkColor.Blue: case QuarkColor.GluonBlue:
+                return QuarkColor.AntiBlue;
+            case QuarkColor.AntiRed:
+                return QuarkColor.Red;
+            case QuarkColor.AntiGreen:
+                return QuarkColor.Green;
+            case QuarkColor.AntiBlue:
+                return QuarkColor.Blue;
+            default:
+                return QuarkColor.GluonRed;
+        }
+    }
+
     public void FlashToColor(QuarkColor toColor, Action onComplete = null)
     {
         Gradient g = new Gradient();

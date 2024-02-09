@@ -16,7 +16,7 @@ public class CartesianModel : MonoBehaviour
     public float Mc = 1e-05f,
     k = 5;
 
-    //Default values
+    //Values
     public Vector3[] x = new Vector3[4] { new Vector3(0.5f, 0, 0), new Vector3(-0.25f, 0.4330127f, 0), new Vector3(-0.25f, -0.4330127f, 0), new Vector3(0, 0, 0) }, 
         x_dot = new Vector3[4] { new Vector3(2, -2, 0), new Vector3(0, 4, -4), new Vector3(-4, 0, 4), new Vector3(0, 0, 0) }, 
         x_dot_dot = new Vector3[4] { new Vector3(), new Vector3(), new Vector3(), new Vector3() }, 
@@ -37,16 +37,25 @@ public class CartesianModel : MonoBehaviour
     public GameObject Point;
 
     private Vector3 rotateProton = new Vector3();
+    private float randomRotation = 250;
 
     //Initial values used for resetting without relaunching application
     private Vector3[] _x, _x_dot, _x_dot_dot, _omega, _omega_dot, _A;
+
+    //Default values
+    private Vector3[] __x, __x_dot, __x_dot_dot, __omega, __omega_dot, __A;
+    private float[] __m;
+    private float __Mc, __R, __k, __randomRotation;
+    private int __n, __dimensions;
 
     private void Start()
     {
         if (!centerOfMass) centerOfMass = Instantiate(new GameObject()).transform;
         //FindObjectOfType<Pather>().active = true;
-        _x = x; _x_dot = x_dot; _x_dot_dot = x_dot_dot;
-        _omega = omega; _omega_dot = omega_dot; _A = A;
+        __x = (Vector3[])(_x = x).Clone(); __x_dot = (Vector3[])(_x_dot = x_dot).Clone(); __x_dot_dot = (Vector3[])(_x_dot_dot = x_dot_dot).Clone();
+        __omega = (Vector3[])(_omega = omega).Clone(); __omega_dot = (Vector3[])(_omega_dot = omega_dot).Clone(); __A = (Vector3[])(_A = A).Clone();
+
+        __m = (float[])m.Clone(); __Mc = Mc; __n = n; __dimensions = dimensions; __k = k; __R = R; __randomRotation = randomRotation;
     }
 
     void Update()
@@ -124,10 +133,12 @@ public class CartesianModel : MonoBehaviour
 
         if (Random.Range(0f, 1f) <= chaosShiftChance) ChangeRandomForce();
 
-        if (Random.Range(0f, 1f) <= .01) rotateProton = RandomForce() * 250;
+        if (Random.Range(0f, 1f) <= .01) rotateProton = RandomForce() * randomRotation;
 
         transform.parent.Rotate(rotateProton * Time.deltaTime);
     }
+
+    #region Lagrangian and Main Calculations
 
     //Makes it so instead of having to refer to var[1224234325453] or something like that when inputting variables into the Lagrangian, you can just use x_dot.
     //You technically don't need this, but you probably want this
@@ -182,11 +193,19 @@ public class CartesianModel : MonoBehaviour
         return (output == 0) ? 0.00001f : output; //If the sum would return zero, return not zero (otherwise everything crashes due to a division by zero)
     }
 
+#endregion
+
     public void ResetState() {
         x = _x; x_dot = _x_dot; x_dot_dot = _x_dot_dot;
-        omega = _omega; omega_dot = _omega_dot; A = _A; 
+        omega = _omega; omega_dot = _omega_dot; A = _A;
+
+        transform.parent.rotation = Quaternion.identity;
+        rotateProton = new Vector3();
+
+        FindObjectOfType<SeaQuarkSpawner>().ResetAllParticles();
     }
 
+    #region Applying Random Force
 
     private void ChangeRandomForce() {
         int counterForceIndex = Random.Range(0, dimensions);
@@ -205,7 +224,77 @@ public class CartesianModel : MonoBehaviour
     private Vector3 RandomForce() {
         return new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f));
     }
+
+    #endregion
+
+    #region Setting New Initial Values In-Game
+
+    private Vector3[] ProcessValues(float?[] newVals, params Vector3[] oldVals) {
+        for (int i = 0; i < newVals.Length; i++) {
+            if (newVals[i] != null) oldVals[i/3][i%3] = newVals[i].Value;
+        }
+        return oldVals;
+    }
+
+
+    public void SetNewInitialAndRestart(float?[] newVals, ValueType valToModify)
+    {
+        switch (valToModify)
+        {
+            case ValueType.POSITION:
+                _x = ProcessValues(newVals, _x);
+                break;
+            case ValueType.VELOCITY:
+                _x_dot = ProcessValues(newVals, _x_dot);
+                break;
+            case ValueType.MISC:
+                Vector3[] newerVals = ProcessValues(newVals, new Vector3(m[0], m[1], m[2]), new Vector3(R, k, Mc), new Vector3(n, dimensions, randomRotation));
+                m = new float[] { newerVals[0][0], newerVals[0][1], newerVals[0][2] };
+                R = newerVals[1][0]; k = newerVals[1][1]; Mc = newerVals[1][2];
+                n = Mathf.FloorToInt(newerVals[2][0]);
+                dimensions = Mathf.FloorToInt(newerVals[2][1]);
+                randomRotation = newerVals[2][2];
+                break;
+        }
+
+        ResetState();
+    }
+    public Vector3[] ResetToDefaultAndRestart(ValueType valToReset)
+    {
+        Vector3[] ret = null;
+
+        switch (valToReset)
+        {
+            case ValueType.POSITION:
+                _x = (Vector3[])__x.Clone();
+                ret = _x;
+                break;
+            case ValueType.VELOCITY:
+                _x_dot = (Vector3[])__x_dot.Clone();
+                ret = _x_dot;
+                break;
+            case ValueType.MISC:
+                m = (float[])__m.Clone();
+                R = __R; k = __k; Mc = __Mc;
+                n = __n; dimensions = __dimensions; randomRotation = __randomRotation;
+                ret = new Vector3[] { new Vector3(m[0], m[1], m[2]), new Vector3(R, k, Mc), new Vector3(n, dimensions, randomRotation) };
+                break;
+        }
+
+        ResetState();
+
+        return (Vector3[])ret.Clone();
+    }
+
+    public enum ValueType
+    {
+        POSITION, VELOCITY, MISC
+    }
+
+    #endregion
 }
+
+#region Custom Editor (Not used by client, devs only)
 
 #if (UNITY_EDITOR && !UNITY_ANDROID)
 [CustomEditor(typeof(CartesianModel))]
@@ -231,3 +320,5 @@ public class SomeScriptEditor : Editor
     }
 }
 #endif
+
+#endregion

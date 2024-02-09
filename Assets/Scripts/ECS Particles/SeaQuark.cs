@@ -7,7 +7,7 @@ public class SeaQuark : MonoBehaviour
     public float virtuality;
     public float x;
     public float cageRadius;
-    public QuarkColor color;
+    public QuarkColor color = QuarkColor.Red;
 
     private GameObject valenceQuarkDown;
     private GameObject valenceQuarkUpRed;
@@ -61,13 +61,22 @@ public class SeaQuark : MonoBehaviour
     public void Start()
     {
         HP = 1f;
-        color = QuarkColor.Red;
         valenceQuarkDown = GameObject.Find("Quark3_Down");
         valenceQuarkUpRed = GameObject.Find("Quark1_Up_Red");
         valenceQuarkUpBlue = GameObject.Find("Quark2_Up_Blue");
 
         dirAvg = RandomUnitVector() * 5;
         transform.rotation = Quaternion.LookRotation(dirAvg);
+
+        QuarkPair[] qs = GetComponentsInChildren<QuarkPair>();
+        qs[0].quarkColor = color;
+        qs[1].quarkColor = TypeQuark.GetAntiColor(color);
+
+        qs[0].GetComponent<ParticleSystem>().startColor = QuarkSettings.GetColorRGB(qs[0].quarkColor);
+        qs[1].GetComponent<ParticleSystem>().startColor = QuarkSettings.GetColorRGB(qs[1].quarkColor);
+
+        qs[0].GetComponent<ParticleSystem>().Play();
+        qs[1].GetComponent<ParticleSystem>().Play();
     }
 
     public void Update()
@@ -106,12 +115,11 @@ public class SeaQuark : MonoBehaviour
 
         if (HP <= 0)
         {
-            FindObjectOfType<SeaQuarkSpawner>().Energy++;
-            Destroy(this.gameObject);
+            FindObjectOfType<SeaQuarkSpawner>().DestroyParticle(this);
         }
         else
         {
-            HP -= virtuality * 1.5f * Time.deltaTime; // TODO determine lifetime scaling with virtuality
+            HP -= 3f * (0.1f + transform.position.magnitude * transform.position.magnitude * Time.deltaTime); // TODO determine lifetime scaling with virtuality
         }
     }
 }
