@@ -15,6 +15,8 @@ public class SeaQuark : MonoBehaviour
 
     private Vector3 dirAvg;
 
+    public static float pull = 200000;
+
     private Vector3 RandomUnitVector()
     {
         return new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(-1f, 1f));
@@ -28,7 +30,7 @@ public class SeaQuark : MonoBehaviour
             return 0;
 
         float3 vectorToQuark = (float3)(quark.transform.position - this.transform.position);
-        float3 f = vectorToQuark / math.max(0.1f, math.lengthsq(vectorToQuark));
+        float3 f = pull * vectorToQuark / math.max(0.1f, math.lengthsq(vectorToQuark));
 
         if (quark.GetComponent<Quark>().quarkColor == this.color)
         {
@@ -42,6 +44,7 @@ public class SeaQuark : MonoBehaviour
 
     private Vector3 randomnessFromVirtuality()
     {
+        if (true) { return Vector3.zero; }
         Vector3 r = Vector3.zero;
         if (virtuality > 0.1f)
         {
@@ -119,7 +122,7 @@ public class SeaQuark : MonoBehaviour
         }
         else
         {
-            HP -= 3f * (0.1f + transform.position.magnitude * transform.position.magnitude * Time.deltaTime); // TODO determine lifetime scaling with virtuality
+            HP -= Time.deltaTime;//3f * (0.1f + transform.position.magnitude * transform.position.magnitude * Time.deltaTime); // TODO determine lifetime scaling with virtuality
         }
     }
 }

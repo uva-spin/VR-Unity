@@ -1,6 +1,8 @@
 using UnityEngine;
 using Unity.Mathematics;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class SeaQuarkSpawner : MonoBehaviour
 {
@@ -22,6 +24,10 @@ public class SeaQuarkSpawner : MonoBehaviour
 
     private int numPairs = 0;
 
+    List<SeaQuark> seaQuarks = new List<SeaQuark>();
+
+    public float pullStrength = 200000;
+
     public int getPairCount() {
         return numPairs;
     }
@@ -32,6 +38,8 @@ public class SeaQuarkSpawner : MonoBehaviour
         spawnPosition = float3.zero;
 
         _seaQuarkEnergyCost = seaQuarkEnergyCost;
+
+        SeaQuark.pull = pullStrength;
     }
 
     public void Update()
@@ -42,9 +50,8 @@ public class SeaQuarkSpawner : MonoBehaviour
 
         //Since we're dealing with exponents (ln(1/10^degree)), we can simplify the equation (-degree*ln(10)), and ln(10) is just 2.30258509299, or 2.3026ish
 
-        if (Energy < xDegree * -2.3026f && t > lastSpawnTime + spawnIntervalSeconds)
-        {
-            // Debug.Log("Spawning sea quark");
+        while (Energy < xDegree * -2.3026f) {
+            Debug.Log(("Energy: {0}/{1}", Energy, xDegree * -2.3026f));
             lastSpawnTime = t;
             SpawnQuark();
             numPairs++;
@@ -58,14 +65,16 @@ public class SeaQuarkSpawner : MonoBehaviour
         foreach (Quark q in FindObjectsOfType<Quark>()) {
             q.transform.localScale = -2 * (float)Math.Log(q2 / 1000) * Vector3.one;//(5 + (2 / (q2))) * Vector3.one;
         }
+
+        SeaQuark.pull = pullStrength;
     }
 
     private void SpawnQuark()
     {
         GameObject q = Instantiate(prefab);
-
+    
         q.transform.position = UnityEngine.Random.insideUnitCircle;//this.spawnPosition;
-
+    
         /*
         if (FindObjectOfType<EMField>() && !FindObjectOfType<EMField>().seaLines) { //If seaquark forcelines are disabled, then disable them
             LineRenderer[] lines = q.GetComponentsInChildren<LineRenderer>();
@@ -80,7 +89,7 @@ public class SeaQuarkSpawner : MonoBehaviour
         script.cageRadius = this.cageRadius;
         script.virtuality = this.q2;
         script.x = this.xDegree;
-
+    
         /*  Currently Disabled until Non-physics based sea quarks implemented
         if (FindObjectOfType<EMField>() && !FindObjectOfType<EMField>().physQuarks) {
             foreach (Rigidbody r in q.GetComponentsInChildren<Rigidbody>()) {
@@ -91,7 +100,7 @@ public class SeaQuarkSpawner : MonoBehaviour
         QuarkPair[] pair = q.GetComponentsInChildren<QuarkPair>();
         float random = UnityEngine.Random.Range(0f, 1f);
         script.color = (random <= 0.33f ? QuarkColor.Red : random >= 0.66f ? QuarkColor.Green : QuarkColor.Blue);
-
+    
         Energy += _seaQuarkEnergyCost;
     }
 

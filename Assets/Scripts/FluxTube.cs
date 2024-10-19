@@ -37,6 +37,10 @@ public class FluxTube : MonoBehaviour
     private Transform gluonPositionTransform;
     private Material fluxTubeMaterial;
 
+    public float fluxTubeWidth = 1.0f;
+    private readonly float TUBE_STRETCH_OFFSET = 0.2f; //The tube mesh does not actually stretch completely to the quarks, so this should remove the slight gap
+    private readonly float MESH_ERROR_OFFSET = 0.25f; //There's a slight error with the flux tube mesh where bone 7 is slightly longer than 5 and 3. This should correct it
+
     /// <summary>
     /// Get the position of the flux tube cenetroid in World Space.
     /// </summary>
@@ -98,24 +102,23 @@ public class FluxTube : MonoBehaviour
         centerBone.position = centroid;
         centerBone.rotation = Quaternion.LookRotation(centroidNormal);
 
-
         var q1TargetPos = quark1.position - (quark1.position - centerBone.position).normalized * quark1InitialOffset;
         bone1.LookAt(q1TargetPos, centroidNormal);
         bone1.Rotate(-90, 90, 0);
         var scale1 = Vector3.Distance(centroid, q1TargetPos) / quark1InitialDistance;
-        bone1.localScale = new Vector3(scale1, 1, 1);
+        bone1.localScale = new Vector3(scale1 + TUBE_STRETCH_OFFSET * (scale1 < 0f ? -1 : 1), fluxTubeWidth, fluxTubeWidth);
 
         var q2TargetPos = quark2.position - (quark2.position - centerBone.position).normalized * quark2InitialOffset;
         bone2.LookAt(q2TargetPos, centroidNormal);
         bone2.Rotate(-90, 90, 0);
         var scale2 = Vector3.Distance(centroid, q2TargetPos) / quark2InitialDistance;
-        bone2.localScale = new Vector3(scale2, 1, 1);
+        bone2.localScale = new Vector3(scale2 + TUBE_STRETCH_OFFSET * (scale2 < 0f ? -1 : 1), fluxTubeWidth, fluxTubeWidth);
 
         var q3TargetPos = quark3.position - (quark3.position - centerBone.position).normalized * quark3InitialOffset;
         bone3.LookAt(q3TargetPos, centroidNormal);
         bone3.Rotate(-90, 90, 0);
         var scale3 = Vector3.Distance(centroid, q3TargetPos) / quark3InitialDistance;
-        bone3.localScale = new Vector3(scale3, 1, 1);
+        bone3.localScale = new Vector3(scale3 + (TUBE_STRETCH_OFFSET - MESH_ERROR_OFFSET) * (scale3 < 0f ? -1 : 1), fluxTubeWidth, fluxTubeWidth);
     }
 
     public void SetGluon(Gluon gluon)

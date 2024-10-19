@@ -1,0 +1,20 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+//RWTexture2D<float4> Result;
+
+RWStructuredBuffer<float4x4> transforms;
+RWStructuredBuffer<float3> velocities;
+float delta;
+
+
+[numthreads(10,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    float4x4 transform = transforms[id.x];
+    float3 velocity = velocities[id.x];
+    float3 position = float3(transform._m30, transform._m31, transform._m32) + (velocity * delta);
+    
+}

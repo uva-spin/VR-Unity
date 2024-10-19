@@ -7,20 +7,20 @@ using Unity.Transforms;
 using UnityEngine;
 
 
-public partial class MovementSystem : SystemBase {
+public sealed partial class MovementSystem : SystemBase {
     // Random random;
 
-    // static GameObject valenceQuarkDown;
-    // static GameObject valenceQuarkUpRed;
-    // static GameObject valenceQuarkUpBlue;
+     static GameObject valenceQuarkDownObj;
+     static GameObject valenceQuarkUpRedObj;
+     static GameObject valenceQuarkUpBlueObj;
 
-    // protected override void OnCreate() {
-    //     base.OnCreate();
-    //     valenceQuarkDown = GameObject.Find("Quark3_Down");
-    //     valenceQuarkUpRed = GameObject.Find("Quark1_Up_Red");
-    //     valenceQuarkUpBlue = GameObject.Find("Quark2_Up_Blue");
-    //     Debug.Log(string.Format("found valence quarks, down position={0}", valenceQuarkDown.transform.position));
-    // }
+     protected override void OnStartRunning() {
+         base.OnCreate();
+         valenceQuarkDownObj = GameObject.Find("Quark3_Down");
+         valenceQuarkUpRedObj = GameObject.Find("Quark1_Up_Red");
+         valenceQuarkUpBlueObj = GameObject.Find("Quark2_Up_Blue");
+         //Debug.Log(string.Format("found valence quarks, down position={0}", valenceQuarkDownObj.transform.position));
+     }
 
     private static float3 calculateValenceQuarkForce(float3 vectorToQuark) {
         return vectorToQuark / math.max(0.1f, math.lengthsq(vectorToQuark));
@@ -32,15 +32,19 @@ public partial class MovementSystem : SystemBase {
         // }
     }
 
+    private void CalculateUsingGPU() { 
+        
+    }
+
     protected override void OnUpdate() {
         const int maxGluonsNearby = 80;
         const int maxGluonsToCheck = 1000;
 
         var deltaTime = Time.DeltaTime;
 
-        float3 valenceQuarkDown = (float3) (GameObject.Find("Quark3_Down").transform.position); // TODO replace Find() with FindWithTag() for performance
-        float3 valenceQuarkUpRed = (float3) (GameObject.Find("Quark1_Up_Red").transform.position);
-        float3 valenceQuarkUpBlue = (float3) (GameObject.Find("Quark2_Up_Blue").transform.position);
+        float3 valenceQuarkDown = (float3) (valenceQuarkDownObj.transform.position);
+        float3 valenceQuarkUpRed = (float3) (valenceQuarkUpRedObj.transform.position);
+        float3 valenceQuarkUpBlue = (float3) (valenceQuarkUpBlueObj.transform.position);
         
         EntityQuery particleQuery = GetEntityQuery(ComponentType.ReadOnly<MovementComponent>(), ComponentType.ReadOnly<Translation>());
 

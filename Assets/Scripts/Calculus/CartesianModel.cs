@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 //Fancy way of saying "hey, if this is a built application and not the editor, don't use this"
 #if (UNITY_EDITOR && !UNITY_ANDROID)
 using UnityEditor;
@@ -48,6 +49,11 @@ public class CartesianModel : MonoBehaviour
     private float __Mc, __R, __k, __randomRotation;
     private int __n, __dimensions;
 
+    private StreamWriter fileOutput;
+    private int lastSecond = -1;
+
+    public bool writeOutputToFile = false;
+
     private void Start()
     {
         if (!centerOfMass) centerOfMass = Instantiate(new GameObject()).transform;
@@ -56,6 +62,13 @@ public class CartesianModel : MonoBehaviour
         __omega = (Vector3[])(_omega = omega).Clone(); __omega_dot = (Vector3[])(_omega_dot = omega_dot).Clone(); __A = (Vector3[])(_A = A).Clone();
 
         __m = (float[])m.Clone(); __Mc = Mc; __n = n; __dimensions = dimensions; __k = k; __R = R; __randomRotation = randomRotation;
+
+        if (writeOutputToFile)
+        {
+            fileOutput = new StreamWriter(Path.Combine(Application.persistentDataPath, "output.csv"));
+            fileOutput.WriteLine("Time (s), x1, y1, z1, x2, y2, z2, x3, y3, z3, xc, yx, zc, x_dot1, y_dot1, z_dot1, x_dot2, y_dot2, z_dot2, x_dot3, y_dot3, z_dot3, x_dotc, y_dotx, z_dotc");
+            HandleFileWriting(0);
+        }
     }
 
     void Update()
@@ -136,6 +149,8 @@ public class CartesianModel : MonoBehaviour
         if (Random.Range(0f, 1f) <= .01) rotateProton = RandomForce() * randomRotation;
 
         transform.parent.Rotate(rotateProton * Time.deltaTime);
+
+        HandleFileWriting(Time.realtimeSinceStartup);
     }
 
     #region Lagrangian and Main Calculations
@@ -159,7 +174,7 @@ public class CartesianModel : MonoBehaviour
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < dimensions; j++) {
-                x_dot_dot[i][j] = -(k / m[i]) * ((R * (x[3][j] - x[i][j]) / Mathf.Sqrt(Sum(i, j))) - (x[3][j] - x[i][j]));
+                x_dot_dot[i][j] = -(k / m[i]) * ((R * (x[3][j] - x[i][j]) / Mathf.Sqrt(Sum(i, j))) - (x[3][j] - x[i][j])) + calculateMagnetics();
                 omega_dot[i][j] = Mathf.Sqrt(5 * A[i][j] / (2 * m[i] * Ra * Ra));
             }
         }
@@ -182,6 +197,13 @@ public class CartesianModel : MonoBehaviour
         for (int j = 0; j < dimensions; j++) { for (int i = 0; i < n; i++) { output[36 + 3 * i + j] = omega_dot[i][j]; } }
 
         return output;
+    }
+
+    private float calculateMagnetics()
+    {
+        //TODO: re-impliment magnetic force
+
+        return 0;
     }
 
     //This is the sumnation that every equation seems to use
@@ -286,9 +308,35 @@ public class CartesianModel : MonoBehaviour
         return (Vector3[])ret.Clone();
     }
 
+
     public enum ValueType
     {
         POSITION, VELOCITY, MISC
+    }
+
+    #endregion
+
+    #region Outputting calculations to file for inspection
+
+    private string GetVectorAsStringFromIndex(Vector3[] array, int index) {
+        Vector3 value = array[index];
+        return $"{value.x}, {value.y}, {value.z}";
+    }
+
+    private void HandleFileWriting(float time) {
+        if (fileOutput == null) return;
+        if (Mathf.Floor(time) > lastSecond) {
+            string text = 
+                $"{Mathf.FloorToInt(time)}, {GetVectorAsStringFromIndex(x, 0)}, {GetVectorAsStringFromIndex(x, 1)}, {GetVectorAsStringFromIndex(x, 2)}, {GetVectorAsStringFromIndex(x, 3)}"
+                + $", {GetVectorAsStringFromIndex(x_dot, 0)}, {GetVectorAsStringFromIndex(x_dot, 1)}, {GetVectorAsStringFromIndex(x_dot, 2)}, {GetVectorAsStringFromIndex(x_dot, 3)}";
+            fileOutput.WriteLine(text);
+            lastSecond = Mathf.FloorToInt(time);
+        }
+        if (time >= 10)
+        {
+            fileOutput.Close();
+            Application.Quit();
+        }
     }
 
     #endregion

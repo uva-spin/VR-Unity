@@ -34,6 +34,8 @@ public class MenuScript : MonoBehaviour
     public bool openMenuButtonActive = true;
     public bool closeMenuButtonActive = false;
 
+    FluxTube fluxTube;
+
     private string[][][] valueFieldText = {
         new string[][]{ //Position
             new string[] {"Quark 1 Position", "X<sub>0</sub>", "Y<sub>0</sub>", "Z<sub>0</sub>" },
@@ -70,6 +72,8 @@ public class MenuScript : MonoBehaviour
             t.SetActive(false);
         }
         SwitchTab(currentTab);
+
+        fluxTube = FindObjectOfType<FluxTube>();
     }
 
     // Update is called once per frame
@@ -100,6 +104,8 @@ public class MenuScript : MonoBehaviour
         SeaQuarkSpawner sqs = FindObjectOfType<SeaQuarkSpawner>();
         sqs.xDegree = x;
         sqs.q2 = q2;
+
+        if (fluxTube != null) fluxTube.fluxTubeWidth = 0.5f + Mathf.Min(5f/q2, 3.0f);
     }
 
     private void LateUpdate()
