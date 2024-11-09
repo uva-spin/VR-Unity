@@ -57,9 +57,17 @@ public class CSVPhysics : MonoBehaviour
         follow_center = !follow_center;
     }
 
+    //
+    //TODO: We need a button to run this function. This should open a popup file browser you can use to select a csv file
+    //There should be a folder called CSV_file outside of the asset folder with a couple example files you can use
+    //
     public void OpenFile() {
         SimpleFileBrowser.FileBrowser.ShowLoadDialog(OnSuccess, OnCancel, FileBrowser.PickMode.Files, title: "Select CSV file");
     }
+
+    //
+    //TODO: We also need a button to disable the CSV model, and instead run the CartesianModel.cs script
+    //
 
     public void OnSuccess(string[] paths) {
         if (paths != null && paths.Length > 0 && paths[0] != "")
@@ -76,6 +84,10 @@ public class CSVPhysics : MonoBehaviour
         elapsed_time = dt * playbackSlider.value;
     }
 
+
+    //
+    //TODO: You can use this function to disable the Cartesian Model as this will run only after we read in a csv file
+    //
     public void ResetPlayback() {
         elapsed_time = 0;
     }
