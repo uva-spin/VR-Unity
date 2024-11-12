@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab34ed1acf5144a9b82da65b23d19b1, type: 3}
+  m_Name: QuarkSettings
+  m_EditorClassIdentifier: 
+  QuarkRed: {r: 1, g: 0.19339621, b: 0.19339621, a: 0.6156863}
+  GluonRed: {r: 1, g: 0, b: 0, a: 0}
+  AntiRed: {r: 0.087931626, g: 0.9468624, b: 0.9811321, a: 0}
+  QuarkGreen: {r: 0.21226418, g: 1, b: 0.36060396, a: 0.6862745}
+  GluonGreen: {r: 0, g: 1, b: 0.064777374, a: 0}
+  AntiGreen: {r: 1, g: 0, b: 0.8683319, a: 0}
+  QuarkBlue: {r: 0.25943398, g: 0.45207208, b: 1, a: 0.69411767}
+  GluonBlue: {r: 0.020024916, g: 0.16694541, b: 0.8490566, a: 0}
+  AntiBlue: {r: 1, g: 0.99501103, b: 0, a: 0}
+  GluonSpeed: 10
+  GluonFlashTime: 0
+  QuarkSpeed: 10
+  QuarkMoveRadius: 1000
+  GlobalSpeedMultiplier: 1
+  GlobalSlowdownCoefficient: 0.2
+  TrailColorLerp: 0.2
