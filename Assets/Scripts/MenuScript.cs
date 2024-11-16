@@ -34,6 +34,8 @@ public class MenuScript : MonoBehaviour
     public bool openMenuButtonActive = true;
     public bool closeMenuButtonActive = false;
 
+    public CSVPhysics csvPhysics;
+
     FluxTube fluxTube;
 
     private string[][][] valueFieldText = {
@@ -133,6 +135,19 @@ public class MenuScript : MonoBehaviour
         menuActive = false;
         closeMenuButtonActive = false;
         openMenuButtonActive = true;
+    }
+
+    // New Method to Call OpenFile from CSVPhysics
+    public void OpenCSVFileFromButton()
+    {
+        if (csvPhysics != null)
+        {
+            csvPhysics.OpenFile();
+        }
+        else
+        {
+            Debug.LogError("CSVPhysics script is not assigned in the MenuScript.");
+        }
     }
 
     public void SwitchTab(int tab) {
