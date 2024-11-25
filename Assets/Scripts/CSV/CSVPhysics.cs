@@ -67,7 +67,7 @@ public class CSVPhysics : MonoBehaviour
 
     //
     //TODO: We also need a button to disable the CSV model, and instead run the CartesianModel.cs script
-    //
+    //Done!
 
     public void OnSuccess(string[] paths) {
         if (paths != null && paths.Length > 0 && paths[0] != "")
@@ -87,7 +87,7 @@ public class CSVPhysics : MonoBehaviour
 
     //
     //TODO: You can use this function to disable the Cartesian Model as this will run only after we read in a csv file
-    //
+    //didn't need to use this, so I think it's done
     public void ResetPlayback() {
         elapsed_time = 0;
     }
