@@ -276,4 +276,16 @@ public class MenuScript : MonoBehaviour
             _ => throw new System.IndexOutOfRangeException() //"Default" value in a normal switch case
         };
     }
+
+    public void OldModelButton(bool item) {
+        quark1.GetComponent<Quark>().enabled = item;
+        quark2.GetComponent<Quark>().enabled = item;
+        quark3.GetComponent<Quark>().enabled = item;
+
+        quark1.GetComponent<ChangeOrbit>().enabled = item;
+        quark2.GetComponent<ChangeOrbit>().enabled = item;
+        quark3.GetComponent<ChangeOrbit>().enabled = item;
+    }
+
+
 }

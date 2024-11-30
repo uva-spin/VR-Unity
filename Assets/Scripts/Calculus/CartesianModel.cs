@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 public class CartesianModel : MonoBehaviour
-{
+{   
     public int n = 3;
     public int dimensions = 3;
     public float R = 0;
