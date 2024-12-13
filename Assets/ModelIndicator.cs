@@ -9,6 +9,11 @@ public class ModelIndicator : MonoBehaviour
     public GameObject csv;
     public GameObject cartesian;
 
+    //this is where old model is
+    public GameObject menu;
+    private MenuScript menuScript;
+
+
     private MonoBehaviour cartesianScript;
 
 
@@ -16,6 +21,7 @@ public class ModelIndicator : MonoBehaviour
     void Start()
     {
         cartesianScript = cartesian.GetComponent<CartesianModel>();
+        menuScript = menu.GetComponent<MenuScript>();
     }
 
     // Update is called once per frame
@@ -28,6 +34,10 @@ public class ModelIndicator : MonoBehaviour
         else if (cartesianScript.enabled) 
         {
             text.text = "Cartesian";
+        }
+        else if (menuScript.getPolarized())
+        {
+            text.text = "Polarized(Old Model)";
         }
     }
 }

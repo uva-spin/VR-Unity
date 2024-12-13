@@ -38,6 +38,9 @@ public class MenuScript : MonoBehaviour
 
     FluxTube fluxTube;
 
+    //boolean tracker to check if the old polarized model is turned on
+    private bool polarized = false;
+
     private string[][][] valueFieldText = {
         new string[][]{ //Position
             new string[] {"Quark 1 Position", "X<sub>0</sub>", "Y<sub>0</sub>", "Z<sub>0</sub>" },
@@ -285,6 +288,12 @@ public class MenuScript : MonoBehaviour
         quark1.GetComponent<ChangeOrbit>().enabled = item;
         quark2.GetComponent<ChangeOrbit>().enabled = item;
         quark3.GetComponent<ChangeOrbit>().enabled = item;
+        polarized = item;
+    }
+
+    public bool getPolarized()
+    {
+        return polarized;
     }
 
 

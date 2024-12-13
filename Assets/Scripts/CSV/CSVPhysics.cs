@@ -25,6 +25,9 @@ public class CSVPhysics : MonoBehaviour
 
     private bool unstable = false;
 
+    //scaling values
+    public float scalingFactor = 1f;
+
     // Start is called before the first frame update
     void Start()
     {
