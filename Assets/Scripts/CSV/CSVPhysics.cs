@@ -21,7 +21,7 @@ public class CSVPhysics : MonoBehaviour
     public Slider playbackSlider;
     private Vector3 camPosition = new Vector3(0, 0, -10);
     public Text info, stats;
-    public float playbackSpeed = 1f;
+    [SerializeField] public float playbackSpeed = 1f;
 
     private bool unstable = false;
 
@@ -44,19 +44,26 @@ public class CSVPhysics : MonoBehaviour
         int index = Mathf.FloorToInt(elapsed_time / dt) % positions.Count;
         if (index < 0) { index = positions.Count - 1; }
         for (int i = 0; i < 4; i++)
-            obj[i].transform.position = Vector3.Lerp(positions[index][i], positions[(index + 1) % positions.Count][i], (elapsed_time - Mathf.Floor(elapsed_time)) / dt);
+            obj[i].transform.position = Vector3.Lerp(
+                positions[index][i] * scalingFactor,
+                positions[(index + 1) % positions.Count][i] * scalingFactor,
+                (elapsed_time - Mathf.Floor(elapsed_time)) / dt
+            );
         if (playbackSlider != null) playbackSlider.value = index;
     }
 
-    Vector3 GetCenterAtTime(int t) {
+    Vector3 GetCenterAtTime(int t)
+    {
         return 1 / 3f * (positions[t][0] + positions[t][1] + positions[t][2]);
     }
 
-    Vector3 getCenter() {
+    Vector3 getCenter()
+    {
         return 1 / 3f * (obj[0].transform.position + obj[1].transform.position + obj[2].transform.position);
     }
 
-    public void FollowCenter() {
+    public void FollowCenter()
+    {
         follow_center = !follow_center;
     }
 
@@ -64,7 +71,8 @@ public class CSVPhysics : MonoBehaviour
     //TODO: We need a button to run this function. This should open a popup file browser you can use to select a csv file
     //There should be a folder called CSV_file outside of the asset folder with a couple example files you can use
     //
-    public void OpenFile() {
+    public void OpenFile()
+    {
         SimpleFileBrowser.FileBrowser.ShowLoadDialog(OnSuccess, OnCancel, FileBrowser.PickMode.Files, title: "Select CSV file");
     }
 
@@ -72,7 +80,8 @@ public class CSVPhysics : MonoBehaviour
     //TODO: We also need a button to disable the CSV model, and instead run the CartesianModel.cs script
     //Done!
 
-    public void OnSuccess(string[] paths) {
+    public void OnSuccess(string[] paths)
+    {
         if (paths != null && paths.Length > 0 && paths[0] != "")
         {
             path = paths[0];
@@ -82,7 +91,8 @@ public class CSVPhysics : MonoBehaviour
 
     public void OnCancel() { } //Unused
 
-    public void ChangeTime() {
+    public void ChangeTime()
+    {
         if (playbackSlider == null) return;
         elapsed_time = dt * playbackSlider.value;
     }
@@ -91,11 +101,13 @@ public class CSVPhysics : MonoBehaviour
     //
     //TODO: You can use this function to disable the Cartesian Model as this will run only after we read in a csv file
     //didn't need to use this, so I think it's done
-    public void ResetPlayback() {
+    public void ResetPlayback()
+    {
         elapsed_time = 0;
     }
 
-    void ReadData() {
+    void ReadData()
+    {
         if (path == null) return;
         unstable = false;
         StreamReader reader = new StreamReader(path);
@@ -127,28 +139,34 @@ public class CSVPhysics : MonoBehaviour
         ResetPlayback();
     }
 
-    float GetTime(string data) {
+    float GetTime(string data)
+    {
         return float.Parse(data.Split(',')[0]);
     }
 
-    float parseFloat(string value) {
-        if (value.Equals("nan")) {
+    float parseFloat(string value)
+    {
+        if (value.Equals("nan"))
+        {
             unstable = true;
-            return float.NaN; 
+            return float.NaN;
         }
         else
         {
-            try { 
-                return float.Parse(value); 
+            try
+            {
+                return float.Parse(value);
             }
-            catch { 
-                unstable = true; 
-                return float.NaN; 
+            catch
+            {
+                unstable = true;
+                return float.NaN;
             }
         }
     }
 
-    string[] separateString(string data) {
+    string[] separateString(string data)
+    {
         string[] vals = data.Split(',');
         if (vals.Length < 13)
         {
@@ -162,14 +180,20 @@ public class CSVPhysics : MonoBehaviour
         return vals;
     }
 
-    Vector3[] GetVector(string data) {
+    Vector3[] GetVector(string data)
+    {
         string[] vals = separateString(data);
 
-        return new Vector3[] { 
-            new Vector3(parseFloat(vals[1]), parseFloat(vals[2]), parseFloat(vals[3])),
-            new Vector3(parseFloat(vals[4]), parseFloat(vals[5]), parseFloat(vals[6])),
-            new Vector3(parseFloat(vals[7]), parseFloat(vals[8]), parseFloat(vals[9])),
-            new Vector3(parseFloat(vals[10]), parseFloat(vals[11]), parseFloat(vals[12]))
+        return new Vector3[] {
+        new Vector3(parseFloat(vals[1]) * scalingFactor, parseFloat(vals[2]) * scalingFactor, parseFloat(vals[3]) * scalingFactor),
+        new Vector3(parseFloat(vals[4]) * scalingFactor, parseFloat(vals[5]) * scalingFactor, parseFloat(vals[6]) * scalingFactor),
+        new Vector3(parseFloat(vals[7]) * scalingFactor, parseFloat(vals[8]) * scalingFactor, parseFloat(vals[9]) * scalingFactor),
+        new Vector3(parseFloat(vals[10]) * scalingFactor, parseFloat(vals[11]) * scalingFactor, parseFloat(vals[12]) * scalingFactor)
         };
+    }
+
+    public void SetScalingFactor(float scale)
+    {
+        scalingFactor = scale;
     }
 }
