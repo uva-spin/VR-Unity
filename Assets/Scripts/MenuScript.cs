@@ -1,11 +1,23 @@
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
+public class ValueInputsWrapper
+{
+    public string[] valueInputs;
+}
+
+
 public class MenuScript : MonoBehaviour
 {
+
+    private string[] savedValues;
+    private string saveFilePath;
+
     public GameObject menu;
     public GameObject[] menuTabs = new GameObject[2];
     private int currentTab = 0;
@@ -79,6 +91,9 @@ public class MenuScript : MonoBehaviour
         SwitchTab(currentTab);
 
         fluxTube = FindObjectOfType<FluxTube>();
+
+        savedValues = new string[valueInputs.Length];
+        saveFilePath = Path.Combine(Application.persistentDataPath, "saveData.json");
     }
 
     // Update is called once per frame
@@ -111,6 +126,19 @@ public class MenuScript : MonoBehaviour
         sqs.q2 = q2;
 
         if (fluxTube != null) fluxTube.fluxTubeWidth = 0.5f + Mathf.Min(5f/q2, 3.0f);
+
+        // Save to file when "S" is pressed
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            SaveToFile();
+        }
+
+        // Load from file when "L" is pressed
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            LoadFromFile();
+        }
+
     }
 
     private void LateUpdate()
@@ -295,6 +323,56 @@ public class MenuScript : MonoBehaviour
     {
         return polarized;
     }
+
+    private void SaveToFile()
+    {
+        ValueInputsWrapper wrapper = new ValueInputsWrapper();
+        wrapper.valueInputs = new string[valueInputs.Length];
+
+        for (int i = 0; i < valueInputs.Length; i++)
+        {
+            wrapper.valueInputs[i] = valueInputs[i].text;
+        }
+
+        string json = JsonUtility.ToJson(wrapper, true);
+        File.WriteAllText(saveFilePath, json);
+        Debug.Log("Values saved to file: " + saveFilePath);
+        
+    }
+
+    private void LoadFromFile()
+    {
+        if (File.Exists(saveFilePath))
+        {
+            string json = File.ReadAllText(saveFilePath);
+            ValueInputsWrapper wrapper = JsonUtility.FromJson<ValueInputsWrapper>(json);
+
+            if (wrapper != null && wrapper.valueInputs != null)
+            {
+                for (int i = 0; i < valueInputs.Length && i < wrapper.valueInputs.Length; i++)
+                {
+                    valueInputs[i].text = wrapper.valueInputs[i];
+                }
+                Debug.Log("Values loaded from file.");
+                for (int i = 0; i < 9; i++)
+                {
+                    SetValue(i);
+                }
+
+            }
+            else
+            {
+                Debug.LogWarning("Failed to load values from file.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("Save file not found at: " + saveFilePath);
+        }
+    }
+
+
+
 
 
 }

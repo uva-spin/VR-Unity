@@ -159,7 +159,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.SpinPhysicsGroup.SpinLab
-    Standalone: com.DefaultCompany.NewProton
+    Standalone: com.SpinPhysicsGroup.SpinLab
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -773,7 +773,7 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  activeInputHandler: 1
+  activeInputHandler: 2
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []

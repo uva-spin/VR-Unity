@@ -10,13 +10,13 @@ public class SaveLoadTester : MonoBehaviour
         // Save the game when "S" is pressed
         if (Keyboard.current.sKey.wasPressedThisFrame)
         {
-            saveSystem.Save();
+            //saveSystem.Save();
         }
 
         // Load the game when "L" is pressed
         if (Keyboard.current.lKey.wasPressedThisFrame)
         {
-            saveSystem.Load();
+            //saveSystem.Load();
         }
     }
 }
