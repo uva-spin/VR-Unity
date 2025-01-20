@@ -111,6 +111,29 @@ public class MenuScript : MonoBehaviour
         sqs.q2 = q2;
 
         if (fluxTube != null) fluxTube.fluxTubeWidth = 0.5f + Mathf.Min(5f/q2, 3.0f);
+
+        // ---------------------------------------------------------------
+        // -------------- NEW PART: Continuous Rotation Code -------------
+        // ---------------------------------------------------------------
+        if (protonTransform != null 
+            && xAxisRotateSlider != null 
+            && yAxisRotateSlider != null 
+            && zAxisRotateSlider != null)
+        {
+            // Convert each slider's 0–1 value into a rotation speed (degrees/second)
+            float xSpeed = xAxisRotateSlider.value * maxRotationSpeed;
+            float ySpeed = yAxisRotateSlider.value * maxRotationSpeed;
+            float zSpeed = zAxisRotateSlider.value * maxRotationSpeed;
+
+            // Rotate each frame according to the speeds
+            // e.g., Vector3.right for X-axis, up for Y-axis, forward for Z-axis
+            protonTransform.Rotate(Vector3.right,   xSpeed * Time.deltaTime, Space.Self);
+            protonTransform.Rotate(Vector3.up,      ySpeed * Time.deltaTime, Space.Self);
+            protonTransform.Rotate(Vector3.forward, zSpeed * Time.deltaTime, Space.Self);
+        }
+        // ---------------------------------------------------------------
+        // ------------------ END OF NEW PART ----------------------------
+        // ---------------------------------------------------------------
     }
 
     private void LateUpdate()
@@ -118,7 +141,6 @@ public class MenuScript : MonoBehaviour
         if (xSlider.isActiveAndEnabled)
         {
             xSlider.GetComponentInChildren<SliderNum>().GetComponent<TextMeshProUGUI>().text = "10<sup>" + -xSlider.value + "</sup>";
-
             seaCounter.text = "Seaquark Pairs: " + FindObjectOfType<SeaQuarkSpawner>().getPairCount();
         }
 
@@ -212,7 +234,6 @@ public class MenuScript : MonoBehaviour
         FindObjectOfType<CartesianModel>().SetNewInitialAndRestart(vals[currentSubTab], GetTabAsType());
     }
 
-
     private void ResetValence() {
         Vector3[] returned = FindObjectOfType<CartesianModel>().ResetToDefaultAndRestart(GetTabAsType());
         for (int i = 0; i < 3; i++)
@@ -276,7 +297,7 @@ public class MenuScript : MonoBehaviour
             0 => CartesianModel.ValueType.POSITION,
             1 => CartesianModel.ValueType.VELOCITY,
             2 => CartesianModel.ValueType.MISC,
-            _ => throw new System.IndexOutOfRangeException() //"Default" value in a normal switch case
+            _ => throw new System.IndexOutOfRangeException()
         };
     }
 
@@ -296,5 +317,21 @@ public class MenuScript : MonoBehaviour
         return polarized;
     }
 
+    // ---------------------------------------------------------------
+    // -------------- NEW PART: Proton Rotation Fields ---------------
+    // ---------------------------------------------------------------
+    [Header("Proton Rotation Sliders")]
+    public Slider xAxisRotateSlider;  // Assign in Inspector
+    public Slider yAxisRotateSlider;  // Assign in Inspector
+    public Slider zAxisRotateSlider;  // Assign in Inspector
 
+    [Header("Proton to Rotate")]
+    public Transform protonTransform; // Assign Proton or ProtonParent in Inspector
+
+    [Header("Rotation Speeds")]
+    [Tooltip("Maximum degrees per second when a slider is at its max value (e.g., 1).")]
+    public float maxRotationSpeed = 180f; 
+    // ---------------------------------------------------------------
+    // ------------------ END OF NEW PART ----------------------------
+    // ---------------------------------------------------------------
 }
