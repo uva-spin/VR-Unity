@@ -133,11 +133,7 @@ public class MenuScript : MonoBehaviour
             SaveToFile();
         }
 
-        // Load from file when "L" is pressed
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            LoadFromFile();
-        }
+        
 
     }
 
@@ -326,25 +322,50 @@ public class MenuScript : MonoBehaviour
 
     private void SaveToFile()
     {
+        // Create a folder for saves if it doesn't exist
+        string saveDirectory = Path.Combine(Application.persistentDataPath, "Saves");
+        if (!Directory.Exists(saveDirectory))
+        {
+            Directory.CreateDirectory(saveDirectory);
+        }
+
+        // Generate a unique save filename using timestamp
+        string fileName = "Save_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".json";
+        string fullPath = Path.Combine(saveDirectory, fileName);
+
+        // Save data
         ValueInputsWrapper wrapper = new ValueInputsWrapper();
         wrapper.valueInputs = new string[valueInputs.Length];
-
         for (int i = 0; i < valueInputs.Length; i++)
         {
             wrapper.valueInputs[i] = valueInputs[i].text;
         }
 
         string json = JsonUtility.ToJson(wrapper, true);
-        File.WriteAllText(saveFilePath, json);
-        Debug.Log("Values saved to file: " + saveFilePath);
-        
+        File.WriteAllText(fullPath, json);
+
+        Debug.Log("Values saved to file: " + fullPath);
     }
 
-    private void LoadFromFile()
+
+
+
+    private List<string> GetSaveFiles()
     {
-        if (File.Exists(saveFilePath))
+        string saveDirectory = Path.Combine(Application.persistentDataPath, "Saves");
+        if (!Directory.Exists(saveDirectory))
         {
-            string json = File.ReadAllText(saveFilePath);
+            return new List<string>(); // Return empty list if folder doesn't exist
+        }
+
+        return new List<string>(Directory.GetFiles(saveDirectory, "*.json"));
+    }
+
+    public void LoadFromFile(string filePath)
+    {
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
             ValueInputsWrapper wrapper = JsonUtility.FromJson<ValueInputsWrapper>(json);
 
             if (wrapper != null && wrapper.valueInputs != null)
@@ -353,12 +374,13 @@ public class MenuScript : MonoBehaviour
                 {
                     valueInputs[i].text = wrapper.valueInputs[i];
                 }
-                Debug.Log("Values loaded from file.");
+                Debug.Log("Values loaded from file: " + filePath);
+
+                // Update internal values
                 for (int i = 0; i < 9; i++)
                 {
                     SetValue(i);
                 }
-
             }
             else
             {
@@ -367,9 +389,10 @@ public class MenuScript : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Save file not found at: " + saveFilePath);
+            Debug.LogWarning("Save file not found: " + filePath);
         }
     }
+
 
 
 
