@@ -127,14 +127,6 @@ public class MenuScript : MonoBehaviour
 
         if (fluxTube != null) fluxTube.fluxTubeWidth = 0.5f + Mathf.Min(5f/q2, 3.0f);
 
-        // Save to file when "S" is pressed
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            SaveToFile();
-        }
-
-        
-
     }
 
     private void LateUpdate()
@@ -320,7 +312,7 @@ public class MenuScript : MonoBehaviour
         return polarized;
     }
 
-    private void SaveToFile()
+    public void SaveToFile()
     {
         // Create a folder for saves if it doesn't exist
         string saveDirectory = Path.Combine(Application.persistentDataPath, "Saves");
