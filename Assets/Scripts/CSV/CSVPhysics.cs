@@ -44,7 +44,7 @@ public class CSVPhysics : MonoBehaviour
         int index = Mathf.FloorToInt(elapsed_time / dt) % positions.Count;
         if (index < 0) { index = positions.Count - 1; }
         for (int i = 0; i < 4; i++)
-            obj[i].transform.position = Vector3.Lerp(
+            obj[i].transform.localPosition = Vector3.Lerp(
                 positions[index][i] * scalingFactor,
                 positions[(index + 1) % positions.Count][i] * scalingFactor,
                 (elapsed_time - Mathf.Floor(elapsed_time)) / dt
